@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Observatório de Projetos Integradores{% endblock %} | Senac</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="{{ url_for('home') }}" class="navbar-brand">
+      <span class="brand-icon">◈</span>
+      <span class="brand-name">Observatório<span class="brand-sub"> Senac</span></span>
+    </a>
+
+    <div class="navbar-links">
+      <a href="{{ url_for('home') }}" class="nav-link">Início</a>
+
+      {% if session.usuario_id %}
+        <a href="{{ url_for('painel') }}" class="nav-link">Meu Painel</a>
+
+        {% if session.usuario_papel in ['admin', 'coordenador'] %}
+          <a href="{{ url_for('listar_usuarios') }}" class="nav-link">Usuários</a>
+        {% endif %}
+
+        <span class="nav-user">{{ session.usuario_nome }}</span>
+        <a href="{{ url_for('logout') }}" class="btn btn-outline">Sair</a>
+      {% else %}
+        <a href="{{ url_for('login') }}" class="btn btn-primary">Entrar</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <!-- Mensagens flash (feedback ao usuário) -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-container">
+          {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">
+              {{ message }}
+              <button class="flash-close" onclick="this.parentElement.remove()">×</button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 Senac · Observatório de Projetos Integradores</p>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

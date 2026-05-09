@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <div class="auth-header">
+      <span class="brand-icon large">◈</span>
+      <h1 class="auth-title">Bem-vindo(a)</h1>
+      <p class="auth-subtitle">Entre com suas credenciais para acessar o sistema.</p>
+    </div>
+
+    <form method="POST" action="{{ url_for('login') }}" class="auth-form">
+      <div class="form-group">
+        <label for="email">E-mail institucional</label>
+        <input type="email" id="email" name="email" placeholder="seu@email.com.br"
+               required autocomplete="email" />
+      </div>
+
+      <div class="form-group">
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" name="senha" placeholder="••••••••"
+               required autocomplete="current-password" />
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+    </form>
+
+    <p class="auth-note">
+      Não tem acesso? Solicite ao coordenador ou administrador.
+    </p>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+# Banco de dados (não sobe para o GitHub)
+instance/
+*.db
+*.sqlite3
+
+# Cache do Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ambiente virtual
+venv/
+env/
+.env/
+.venv/
+
+# Variáveis de ambiente
+.env
+*.env
+
+# Arquivos do sistema operacional
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/

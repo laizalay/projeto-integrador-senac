@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Início{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Senac · Sistema Acadêmico</div>
+    <h1 class="hero-title">
+      Observatório de<br>
+      <span class="hero-highlight">Projetos Integradores</span>
+    </h1>
+    <p class="hero-desc">
+      Plataforma centralizada para submissão, acompanhamento e avaliação
+      dos projetos integradores da instituição.
+    </p>
+    <div class="hero-actions">
+      {% if session.usuario_id %}
+        <a href="{{ url_for('painel') }}" class="btn btn-primary btn-lg">Acessar Painel</a>
+      {% else %}
+        <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg">Entrar no Sistema</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-card">
+      <span class="stat-number">{{ total_projetos }}</span>
+      <span class="stat-label">Projetos Submetidos</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-number">{{ total_alunos }}</span>
+      <span class="stat-label">Alunos Cadastrados</span>
+    </div>
+  </div>
+</section>
+
+{% if projetos_recentes %}
+<section class="section">
+  <h2 class="section-title">Projetos Recentes</h2>
+  <div class="cards-grid">
+    {% for projeto in projetos_recentes %}
+    <div class="card">
+      <div class="card-header">
+        <span class="badge badge-{{ 'success' if projeto.status == 'Concluído' else 'warning' if projeto.status == 'Avaliado' else 'info' }}">
+          {{ projeto.status }}
+        </span>
+      </div>
+      <h3 class="card-title">{{ projeto.titulo }}</h3>
+      <p class="card-desc">{{ projeto.descricao[:120] }}{% if projeto.descricao|length > 120 %}...{% endif %}</p>
+      {% if projeto.tecnologias %}
+        <div class="card-tags">
+          {% for tech in projeto.tecnologias.split(',') %}
+            <span class="tag">{{ tech.strip() }}</span>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<section class="features-section">
+  <h2 class="section-title">Como funciona</h2>
+  <div class="features-grid">
+    <div class="feature">
+      <div class="feature-icon">✦</div>
+      <h3>Submissão</h3>
+      <p>Alunos submetem seus projetos com título, descrição, tecnologias e link do GitHub.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">◈</div>
+      <h3>Acompanhamento</h3>
+      <p>Gerencie e atualize seus projetos a qualquer momento pelo painel.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">◇</div>
+      <h3>Avaliação</h3>
+      <p>Professores e coordenadores avaliam os projetos dentro da plataforma.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

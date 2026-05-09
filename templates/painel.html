@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Meu Painel{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">
+      {% if usuario.papel in ['admin', 'coordenador'] %}
+        Todos os Projetos
+      {% else %}
+        Meus Projetos
+      {% endif %}
+    </h1>
+    <p class="page-sub">
+      Olá, <strong>{{ usuario.nome }}</strong> ·
+      <span class="role-badge role-{{ usuario.papel }}">{{ usuario.papel }}</span>
+    </p>
+  </div>
+
+  {% if usuario.papel == 'aluno' %}
+  <a href="{{ url_for('novo_projeto') }}" class="btn btn-primary">+ Novo Projeto</a>
+  {% endif %}
+</div>
+
+{% if projetos %}
+<div class="table-wrapper">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Título</th>
+        <th>Tecnologias</th>
+        <th>Status</th>
+        <th>Data</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for projeto in projetos %}
+      <tr>
+        <td class="td-id">{{ projeto.id }}</td>
+        <td class="td-title">
+          <a href="{{ url_for('ver_projeto', id=projeto.id) }}">{{ projeto.titulo }}</a>
+        </td>
+        <td class="td-tags">
+          {% if projeto.tecnologias %}
+            {% for tech in projeto.tecnologias.split(',')[:3] %}
+              <span class="tag tag-sm">{{ tech.strip() }}</span>
+            {% endfor %}
+          {% else %}
+            <span class="text-muted">—</span>
+          {% endif %}
+        </td>
+        <td>
+          <span class="badge badge-{{ 'success' if projeto.status == 'Concluído' else 'warning' if projeto.status == 'Avaliado' else 'info' }}">
+            {{ projeto.status }}
+          </span>
+        </td>
+        <td class="td-date">{{ projeto.criado_em.strftime('%d/%m/%Y') }}</td>
+        <td class="td-actions">
+          <a href="{{ url_for('ver_projeto', id=projeto.id) }}" class="action-btn" title="Ver">👁</a>
+          <a href="{{ url_for('editar_projeto', id=projeto.id) }}" class="action-btn" title="Editar">✏️</a>
+          <form method="POST" action="{{ url_for('excluir_projeto', id=projeto.id) }}"
+                style="display:inline"
+                onsubmit="return confirm('Deseja realmente excluir este projeto?')">
+            <button type="submit" class="action-btn btn-delete" title="Excluir">🗑</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="empty-state">
+  <div class="empty-icon">◈</div>
+  <h3>Nenhum projeto encontrado</h3>
+  <p>Você ainda não submeteu nenhum projeto.</p>
+  <a href="{{ url_for('novo_projeto') }}" class="btn btn-primary">Submeter Primeiro Projeto</a>
+</div>
+{% endif %}
+{% endblock %}
