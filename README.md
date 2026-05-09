@@ -19,7 +19,7 @@
 
 ## 📋 Sobre o Projeto
 
-O **Observatório de Projetos Integradores** é uma plataforma desenvolvida para centralizar e organizar os projetos acadêmicos dos alunos do Senac. A plataforma permite que alunos submetam seus projetos, coordenadores acompanhem as entregas e professores realizem avaliações — tudo dentro de um único sistema.
+O **Observatório de Projetos Integradores** é uma plataforma desenvolvida para centralizar e organizar os projetos integradores dos alunos do Senac. A plataforma permite que alunos submetam seus projetos, coordenadores acompanhem as entregas e gerem relatórios, professores realizem avaliações e empresas identifiquem novos talentos — tudo dentro de um único sistema.
 
 ### Funcionalidades da Fase 1
 
@@ -40,7 +40,7 @@ O **Observatório de Projetos Integradores** é uma plataforma desenvolvida para
 |---|---|
 | Python 3 | Linguagem principal |
 | Flask | Framework web (backend) |
-| SQLAlchemy | ORM — comunicação com o banco de dados |
+| SQLAlchemy | ORM — comunicação da linguagem Python com o banco de dados |
 | SQLite | Banco de dados local |
 | Jinja2 | Templates HTML (incluso no Flask) |
 | HTML5 + CSS3 | Frontend |
@@ -85,7 +85,7 @@ observatorio/
 
 ```bash
 # 1. Clone o repositório
-git clone https://github.com/SEU_USUARIO/SEU_REPOSITORIO.git
+git clone https://github.com/laizalay/projeto-integrador-senac.git
 
 # 2. Entre na pasta
 cd observatorio
@@ -121,7 +121,7 @@ Acesse no navegador: **http://localhost:5000**
 
 ## 🌐 Deploy
 
-O sistema está publicado em: **[link do deploy aqui]**
+O sistema está publicado em: **https://projeto-integrador-senac-ng9t.onrender.com**
 
 Hospedado via [Render.com](https://render.com).
 
@@ -140,15 +140,17 @@ Hospedado via [Render.com](https://render.com).
 
 | Nome | Função |
 |---|---|
-| [Nome do integrante] | Desenvolvimento |
-| [Nome do integrante] | Desenvolvimento |
-| [Nome do integrante] | Desenvolvimento |
+| [Arthur Andrey] https://github.com/thurzzinho | Front-End |
+| [Gabriel Tenório] https://github.com/gaahtenorio | Desenvolvimento |
+| [Laiza Maria] https://github.com/laizalay | Back-End | 
+| [Luis Bezerra] https://github.com/luissbezerra | Desenvolvimento |
+| [Renata Oliveira] https://github.com/srenataoliveira | Desenvolvimento |
 
 ---
 
 ## 🏫 Instituição
 
-Desenvolvido como Projeto Integrador do curso de **[Nome do Curso]** — **Senac**, 2025.
+Desenvolvido como Projeto Integrador do curso de **Análise e Desenvolvimento de Sistemas** — **Faculdade Senac**, 2026.
 
 ---
 
@@ -162,7 +164,7 @@ Desenvolvido como Projeto Integrador do curso de **[Nome do Curso]** — **Senac
 
 ## 📋 About the Project
 
-The **Integrative Projects Observatory** is a web platform developed to centralize and organize academic projects from Senac students. The platform allows students to submit their projects, coordinators to track deliverables, and teachers to conduct evaluations — all within a single system.
+The **Integrative Projects Observatory** is a platform developed to centralize and organize integrative projects from Senac students. The platform allows students to submit their projects, coordinators to track deliverables and generate reports, teachers to conduct evaluations, and companies to identify new talents — all within a single system.
 
 ### Phase 1 Features
 
@@ -228,7 +230,7 @@ observatorio/
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/YOUR_USER/YOUR_REPOSITORY.git
+git clone https://github.com/laizalay/projeto-integrador-senac.git
 
 # 2. Enter the folder
 cd observatorio
@@ -264,7 +266,7 @@ Open in your browser: **http://localhost:5000**
 
 ## 🌐 Live Demo
 
-The system is published at: **[deploy link here]**
+The system is published at: **https://projeto-integrador-senac-ng9t.onrender.com**
 
 Hosted on [Render.com](https://render.com).
 
@@ -283,12 +285,14 @@ Hosted on [Render.com](https://render.com).
 
 | Name | Role |
 |---|---|
-| [Team member name] | Development |
-| [Team member name] | Development |
-| [Team member name] | Development |
+| [Arthur Andrey] | Front-End |
+| [Gabriel Tenório] | Development |
+| [Laiza Maria] | Back-End |
+| [Luis Bezerra] | Development |
+| [Renata Oliveira] | Development |
 
 ---
 
 ## 🏫 Institution
 
-Developed as an Integrative Project for the **[Course Name]** program — **Senac**, 2025.
+Developed as an Integrative Project for the **Analysis and Systems Development** program — **Senac College**, 2026.
