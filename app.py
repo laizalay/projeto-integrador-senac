@@ -6,8 +6,13 @@ from datetime import datetime
 import os
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'senac-observatorio-2025'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///observatorio.db'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'senac-observatorio-2025')
+
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+INSTANCE_DIR = os.path.join(BASE_DIR, 'instance')
+os.makedirs(INSTANCE_DIR, exist_ok=True)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(INSTANCE_DIR, 'observatorio.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
