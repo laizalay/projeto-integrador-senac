@@ -78,26 +78,42 @@ observatorio/
 ## ⚙️ Como Rodar Localmente
 
 ### Pré-requisitos
+- [Git](https://git-scm.com/about) (para copiar a pasta do repositório)
 - [Python 3.10+](https://www.python.org/downloads/)
 - pip (gerenciador de pacotes, já vem com Python)
 
 ### Passo a passo
 
+**1. Clone o repositório**
+
+Abra o Git Bash ou terminal na pasta onde deseja salvar o projeto e rode:
 ```bash
-# 1. Clone o repositório
 git clone https://github.com/laizalay/projeto-integrador-senac.git
+```
 
-# 2. Entre na pasta
-cd observatorio
+**2. Entre na pasta do projeto**
+```bash
+cd projeto-integrador-senac
+```
 
-# 3. Instale as dependências
+**3. Instale as dependências**
+
+As dependências são as bibliotecas que o projeto precisa para funcionar:
+```bash
 pip install -r requirements.txt
+```
 
-# 4. Rode o sistema
+**4. Rode o sistema**
+```bash
 python app.py
 ```
 
-Acesse no navegador: **http://localhost:5000**
+**5. Acesse no navegador**
+
+Após rodar o comando acima, abra o seu navegador e acesse:
+```
+http://localhost:5000
+```
 
 ### Credenciais iniciais
 
@@ -223,26 +239,42 @@ observatorio/
 ## ⚙️ How to Run Locally
 
 ### Requirements
-- [Python 3.10+](https://www.python.org/downloads/)
-- pip (package manager, bundled with Python)
+- [Git](https://git-scm.com/about) — required to clone the repository
+- [Python 3.10+](https://www.python.org/downloads/) — project language
+- pip — Python package manager (already comes installed with Python)
 
 ### Step by step
 
+**1. Clone the repository**
+
+Open Git Bash or terminal in the folder where you want to save the project and run:
 ```bash
-# 1. Clone the repository
 git clone https://github.com/laizalay/projeto-integrador-senac.git
+```
 
-# 2. Enter the folder
-cd observatorio
+**2. Enter the project folder**
+```bash
+cd projeto-integrador-senac
+```
 
-# 3. Install dependencies
+**3. Install the dependencies**
+
+Dependencies are the libraries the project needs to work:
+```bash
 pip install -r requirements.txt
+```
 
-# 4. Run the system
+**4. Run the system**
+```bash
 python app.py
 ```
 
-Open in your browser: **http://localhost:5000**
+**5. Access in the browser**
+
+After running the command above, open your browser and go to:
+```
+http://localhost:5000
+```
 
 ### Default credentials
 
