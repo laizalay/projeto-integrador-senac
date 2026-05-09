@@ -140,11 +140,11 @@ Hospedado via [Render.com](https://render.com).
 
 | Nome | Função |
 |---|---|
-| [Arthur Andrey] https://github.com/thurzzinho | Front-End |
-| [Gabriel Tenório] https://github.com/gaahtenorio | Desenvolvimento |
-| [Laiza Maria] https://github.com/laizalay | Back-End | 
-| [Luis Bezerra] https://github.com/luissbezerra | Desenvolvimento |
-| [Renata Oliveira] https://github.com/srenataoliveira | Desenvolvimento |
+| [Arthur Andrey](https://github.com/thurzzinho) | Front-End |
+| [Gabriel Tenório](https://github.com/gaahtenorio) | Desenvolvimento |
+| [Laiza Maria](https://github.com/laizalay) | Back-End | 
+| [Luis Bezerra](https://github.com/luissbezerra) | Desenvolvimento |
+| [Renata Oliveira](https://github.com/srenataoliveira) | Desenvolvimento |
 
 ---
 
@@ -185,7 +185,7 @@ The **Integrative Projects Observatory** is a platform developed to centralize a
 |---|---|
 | Python 3 | Main programming language |
 | Flask | Web framework (backend) |
-| SQLAlchemy | ORM — database communication |
+| SQLAlchemy | ORM — Python language communication with the database |
 | SQLite | Local database |
 | Jinja2 | HTML templates (included with Flask) |
 | HTML5 + CSS3 | Frontend |
@@ -285,11 +285,11 @@ Hosted on [Render.com](https://render.com).
 
 | Name | Role |
 |---|---|
-| [Arthur Andrey] | Front-End |
-| [Gabriel Tenório] | Development |
-| [Laiza Maria] | Back-End |
-| [Luis Bezerra] | Development |
-| [Renata Oliveira] | Development |
+| [Arthur Andrey](https://github.com/thurzzinho) | FrontEnd |
+| [Gabriel Tenório](https://github.com/gaahtenorio) | Development |
+| [Laiza Maria](https://github.com/laizalay) | BackEnd | 
+| [Luis Bezerra](https://github.com/luissbezerra) | Development |
+| [Renata Oliveira](https://github.com/srenataoliveira) | Development |
 
 ---
 
