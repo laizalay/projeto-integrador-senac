@@ -273,18 +273,16 @@ def novo_usuario():
 # INICIALIZAÇÃO
 # ─────────────────────────────────────────
 
-def criar_admin_inicial():
-    """Cria um admin padrão se não existir nenhum usuário."""
-    with app.app_context():
-        db.create_all()
-        if not Usuario.query.first():
-            admin = Usuario(nome='Administrador', email='admin@senac.br', papel='admin')
-            admin.set_senha('admin123')
-            db.session.add(admin)
-            db.session.commit()
-            print("✅ Admin criado: admin@senac.br / admin123")
 
+@app.before_request
+def inicializar():
+    """Cria as tabelas e o admin antes da primeira requisição."""
+    db.create_all()
+    if not Usuario.query.first():
+        admin = Usuario(nome='Administrador', email='admin@senac.br', papel='admin')
+        admin.set_senha('admin123')
+        db.session.add(admin)
+        db.session.commit()
 
 if __name__ == '__main__':
-    criar_admin_inicial()
     app.run(debug=True)
