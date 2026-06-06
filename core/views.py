@@ -86,10 +86,9 @@ def projeto_novo(request):
 @login_required
 def projeto_detalhe(request, pk):
     projeto = get_object_or_404(Projeto, pk=pk)
-    if projeto.autor != request.user and not request.user.is_admin_ou_coord:
-        messages.error(request, 'Você não tem permissão para ver este projeto.')
-        return redirect('painel')
-    return render(request, 'projeto_detalhe.html', {'projeto': projeto})
+    if projeto.autor != request.user and not request.user.is_admin_ou_coord and not request.user.is_professor:
+    messages.error(request, 'Você não tem permissão para ver este projeto.')
+    return redirect('painel')
 
 
 @login_required
