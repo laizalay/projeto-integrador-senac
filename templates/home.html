@@ -1,83 +1,99 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}Início{% endblock %}
 
 {% block content %}
 <section class="hero">
-  <div class="hero-bg-grid"></div>
-  <div class="hero-content">
-    <div class="hero-badge">Senac · Sistema Acadêmico</div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">✦ Senac · Sistema Acadêmico</div>
     <h1 class="hero-title">
-      Observatório de<br>
-      <span class="hero-highlight">Projetos Integradores</span>
+      Tudo sobre seus projetos<br>em um só lugar —<br><span>Nexus PI</span>
     </h1>
     <p class="hero-desc">
       Plataforma centralizada para submissão, acompanhamento e avaliação
-      dos projetos integradores da instituição.
+      dos projetos integradores do Senac.
     </p>
     <div class="hero-actions">
-      {% if session.usuario_id %}
-        <a href="{{ url_for('painel') }}" class="btn btn-primary btn-lg">Acessar Painel</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'painel' %}" class="btn btn-amber btn-lg">Acessar Painel →</a>
       {% else %}
-        <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg">Entrar no Sistema</a>
+        <a href="{% url 'login' %}" class="btn btn-amber btn-lg">Entrar no Sistema →</a>
       {% endif %}
     </div>
-  </div>
-
-  <div class="hero-stats">
-    <div class="stat-card">
-      <span class="stat-number">{{ total_projetos }}</span>
-      <span class="stat-label">Projetos Submetidos</span>
-    </div>
-    <div class="stat-card">
-      <span class="stat-number">{{ total_alunos }}</span>
-      <span class="stat-label">Alunos Cadastrados</span>
+    <div class="hero-stats">
+      <div class="stat-pill">
+        <span class="stat-pill-num">{{ total_projetos }}</span>
+        <span class="stat-pill-label">Projetos<br>Submetidos</span>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-pill-num">{{ total_alunos }}</span>
+        <span class="stat-pill-label">Alunos<br>Cadastrados</span>
+      </div>
     </div>
   </div>
 </section>
 
 {% if projetos_recentes %}
-<section class="section">
-  <h2 class="section-title">Projetos Recentes</h2>
-  <div class="cards-grid">
-    {% for projeto in projetos_recentes %}
-    <div class="card">
-      <div class="card-header">
-        <span class="badge badge-{{ 'success' if projeto.status == 'Concluído' else 'warning' if projeto.status == 'Avaliado' else 'info' }}">
-          {{ projeto.status }}
-        </span>
-      </div>
-      <h3 class="card-title">{{ projeto.titulo }}</h3>
-      <p class="card-desc">{{ projeto.descricao[:120] }}{% if projeto.descricao|length > 120 %}...{% endif %}</p>
-      {% if projeto.tecnologias %}
-        <div class="card-tags">
-          {% for tech in projeto.tecnologias.split(',') %}
-            <span class="tag">{{ tech.strip() }}</span>
+<section style="padding: 4rem 2rem; background: var(--bg);">
+  <div style="max-width: 1100px; margin: 0 auto;">
+    <p class="section-eyebrow">Últimas submissões</p>
+    <h2 class="section-title">Projetos Recentes</h2>
+    <div class="projetos-grid">
+      {% for projeto in projetos_recentes %}
+      <div class="projeto-card">
+        <div class="projeto-card-header">
+          <h3 class="projeto-card-title">{{ projeto.titulo }}</h3>
+          <span class="badge badge-{{ projeto.status_cor }}">{{ projeto.get_status_display }}</span>
+        </div>
+        <p class="projeto-card-desc">
+          {{ projeto.descricao|truncatechars:110 }}
+        </p>
+        {% if projeto.get_tecnologias_lista %}
+        <div class="tags-list">
+          {% for tech in projeto.get_tecnologias_lista|slice:":4" %}
+            <span class="tag">{{ tech }}</span>
           {% endfor %}
         </div>
-      {% endif %}
+        {% endif %}
+        <div class="projeto-card-footer">
+          <span>{{ projeto.autor.get_full_name|default:projeto.autor.username }}</span>
+          <span>{{ projeto.criado_em|date:"d/m/Y" }}</span>
+        </div>
+      </div>
+      {% endfor %}
     </div>
-    {% endfor %}
   </div>
 </section>
 {% endif %}
 
-<section class="features-section">
-  <h2 class="section-title">Como funciona</h2>
-  <div class="features-grid">
-    <div class="feature">
-      <div class="feature-icon">✦</div>
-      <h3>Submissão</h3>
-      <p>Alunos submetem seus projetos com título, descrição, tecnologias e link do GitHub.</p>
+<section class="features">
+  <div style="max-width: 1100px; margin: 0 auto;">
+    <div style="text-align: center; max-width: 560px; margin: 0 auto 3rem;">
+      <p class="section-eyebrow">Como funciona</p>
+      <h2 class="section-title">Uma plataforma para todos</h2>
+      <p class="section-desc">Cada perfil tem seu espaço — do aluno que submete ao professor que avalia.</p>
     </div>
-    <div class="feature">
-      <div class="feature-icon">◈</div>
-      <h3>Acompanhamento</h3>
-      <p>Gerencie e atualize seus projetos a qualquer momento pelo painel.</p>
-    </div>
-    <div class="feature">
-      <div class="feature-icon">◇</div>
-      <h3>Avaliação</h3>
-      <p>Professores e coordenadores avaliam os projetos dentro da plataforma.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#DBEAFE;">📤</div>
+        <h3>Submissão Centralizada</h3>
+        <p>Alunos submetem projetos com título, descrição, tecnologias e link do GitHub em segundos.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#FEF3C7;">⭐</div>
+        <h3>Avaliação na Plataforma</h3>
+        <p>Professores avaliam diretamente no sistema, com registro de quem avaliou cada projeto.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#D1FAE5;">📊</div>
+        <h3>Visão da Coordenação</h3>
+        <p>Coordenadores acompanham o progresso de todas as turmas com painéis e relatórios.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#EDE9FE;">🏢</div>
+        <h3>Vitrine para Empresas</h3>
+        <p>Empresas parceiras consultam o portfólio e identificam novos talentos com facilidade.</p>
+      </div>
     </div>
   </div>
 </section>

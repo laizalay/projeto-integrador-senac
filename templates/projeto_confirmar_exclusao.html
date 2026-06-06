@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Excluir Projeto{% endblock %}
+
+{% block content %}
+<div class="container-main">
+  <div class="confirm-card">
+    <span class="confirm-icon">🗑️</span>
+    <h2>Excluir projeto?</h2>
+    <p>Você tem certeza que deseja excluir <strong>"{{ projeto.titulo }}"</strong>? Esta ação não pode ser desfeita.</p>
+    <div class="confirm-actions">
+      <a href="{% url 'painel' %}" class="btn btn-outline">Cancelar</a>
+      <form method="POST" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger-outline">Sim, excluir</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

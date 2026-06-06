@@ -1,49 +1,59 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}Novo Usuário{% endblock %}
 
 {% block content %}
 <div class="page-header">
   <div>
     <h1 class="page-title">Cadastrar Usuário</h1>
-    <p class="page-sub">Apenas administradores e coordenadores podem cadastrar usuários.</p>
+    <p class="page-subtitle">Apenas administradores e coordenadores podem cadastrar usuários.</p>
   </div>
-  <a href="{{ url_for('listar_usuarios') }}" class="btn btn-outline">← Voltar</a>
+  <a href="{% url 'usuarios' %}" class="btn btn-outline">← Voltar</a>
 </div>
 
-<div class="form-wrapper">
-  <form method="POST" class="main-form">
-
-    <div class="form-group">
-      <label for="nome">Nome completo <span class="required">*</span></label>
-      <input type="text" id="nome" name="nome" placeholder="João da Silva" required />
-    </div>
-
-    <div class="form-row">
-      <div class="form-group">
-        <label for="email">E-mail <span class="required">*</span></label>
-        <input type="email" id="email" name="email" placeholder="joao@senac.br" required />
+<div class="container-main">
+  <div class="form-card">
+    <form method="POST">
+      {% csrf_token %}
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Nome <span class="form-required">*</span></label>
+          {{ form.first_name }}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Sobrenome</label>
+          {{ form.last_name }}
+        </div>
       </div>
-
-      <div class="form-group">
-        <label for="papel">Papel <span class="required">*</span></label>
-        <select id="papel" name="papel">
-          <option value="aluno">Aluno</option>
-          <option value="coordenador">Coordenador</option>
-          <option value="admin">Administrador</option>
-        </select>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">E-mail <span class="form-required">*</span></label>
+          {{ form.email }}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Usuário <span class="form-required">*</span></label>
+          {{ form.username }}
+        </div>
       </div>
-    </div>
-
-    <div class="form-group">
-      <label for="senha">Senha provisória <span class="required">*</span></label>
-      <input type="password" id="senha" name="senha"
-             placeholder="Mínimo 6 caracteres" minlength="6" required />
-    </div>
-
-    <div class="form-actions">
-      <a href="{{ url_for('listar_usuarios') }}" class="btn btn-outline">Cancelar</a>
-      <button type="submit" class="btn btn-primary">Cadastrar Usuário</button>
-    </div>
-  </form>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Papel <span class="form-required">*</span></label>
+          {{ form.papel }}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Senha <span class="form-required">*</span></label>
+          {{ form.password }}
+        </div>
+      </div>
+      {% for field in form %}
+        {% if field.errors %}
+          <p style="color:var(--danger);font-size:0.8rem;">{{ field.label }}: {{ field.errors|join:", " }}</p>
+        {% endif %}
+      {% endfor %}
+      <div class="form-actions">
+        <a href="{% url 'usuarios' %}" class="btn btn-outline">Cancelar</a>
+        <button type="submit" class="btn btn-primary">Cadastrar Usuário</button>
+      </div>
+    </form>
+  </div>
 </div>
 {% endblock %}
