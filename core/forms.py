@@ -4,9 +4,9 @@ from .models import Usuario, Projeto
 
 
 class LoginForm(AuthenticationForm):
-    username = forms.EmailField(
-        label="E-mail",
-        widget=forms.EmailInput(attrs={'placeholder': 'seu@email.com', 'autofocus': True})
+    username = forms.CharField(
+    label="Usuário",
+    widget=forms.TextInput(attrs={'placeholder': 'admin', 'autofocus': True})
     )
     password = forms.CharField(
         label="Senha",
