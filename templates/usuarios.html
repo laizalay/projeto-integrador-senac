@@ -11,26 +11,56 @@
 </div>
 
 <div class="container-main">
+
+  <!-- Filtro -->
+  <div style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1.5rem;display:flex;gap:1rem;flex-wrap:wrap;align-items:flex-end;">
+    <div style="flex:1;min-width:200px;">
+      <label style="font-size:0.78rem;font-weight:600;color:var(--azul);display:block;margin-bottom:0.4rem;">Buscar por nome ou e-mail</label>
+      <input type="text" id="filtroNome" placeholder="Digite para filtrar..." class="form-control" oninput="filtrarUsuarios()" style="margin:0;">
+    </div>
+    <div style="min-width:160px;">
+      <label style="font-size:0.78rem;font-weight:600;color:var(--azul);display:block;margin-bottom:0.4rem;">Filtrar por papel</label>
+      <select id="filtroPapel" class="form-control" onchange="filtrarUsuarios()" style="margin:0;">
+        <option value="">Todos os papéis</option>
+        <option value="admin">Administrador</option>
+        <option value="coordenador">Coordenador</option>
+        <option value="professor">Professor</option>
+        <option value="aluno">Aluno</option>
+      </select>
+    </div>
+    <button onclick="limparFiltros()" class="btn btn-outline" style="height:42px;">Limpar</button>
+  </div>
+
+  <!-- Contador de resultados -->
+  <p id="contadorResultados" style="font-size:0.82rem;color:var(--text-3);margin-bottom:0.75rem;"></p>
+
   <div class="table-card">
     <div style="overflow-x:auto;">
-      <table>
+      <table id="tabelaUsuarios">
         <thead>
           <tr>
             <th>#</th>
             <th>Nome</th>
             <th>E-mail</th>
+            <th>Usuário</th>
             <th>Papel</th>
             <th>Cadastrado em</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody>
           {% for u in usuarios %}
-          <tr>
+          <tr data-nome="{{ u.get_full_name|lower }} {{ u.username|lower }}" data-email="{{ u.email|lower }}" data-papel="{{ u.papel }}">
             <td class="td-id">{{ u.id }}</td>
             <td style="font-weight:600;">{{ u.get_full_name|default:u.username }}</td>
             <td style="color:var(--text-2);font-size:0.875rem;">{{ u.email }}</td>
+            <td style="font-family:var(--mono);font-size:0.8rem;color:var(--text-3);">{{ u.username }}</td>
             <td><span class="role-badge role-{{ u.papel }}">{{ u.get_papel_display }}</span></td>
             <td class="td-date">{{ u.date_joined|date:"d/m/Y" }}</td>
+            <td class="td-actions">
+              <a href="{% url 'usuario_editar' u.pk %}" class="action-icon" title="Editar">✏️</a>
+              <a href="{% url 'usuario_senha' u.pk %}" class="action-icon" title="Redefinir senha">🔑</a>
+            </td>
           </tr>
           {% endfor %}
         </tbody>
@@ -38,4 +68,40 @@
     </div>
   </div>
 </div>
+
+{% block extra_js %}
+<script>
+function filtrarUsuarios() {
+  const nome = document.getElementById('filtroNome').value.toLowerCase();
+  const papel = document.getElementById('filtroPapel').value;
+  const linhas = document.querySelectorAll('#tabelaUsuarios tbody tr');
+  let visiveis = 0;
+
+  linhas.forEach(linha => {
+    const nomeLinha = linha.dataset.nome || '';
+    const emailLinha = linha.dataset.email || '';
+    const papelLinha = linha.dataset.papel || '';
+
+    const matchNome = nomeLinha.includes(nome) || emailLinha.includes(nome);
+    const matchPapel = !papel || papelLinha === papel;
+
+    if (matchNome && matchPapel) {
+      linha.style.display = '';
+      visiveis++;
+    } else {
+      linha.style.display = 'none';
+    }
+  });
+
+  const contador = document.getElementById('contadorResultados');
+  contador.textContent = nome || papel ? `${visiveis} resultado${visiveis !== 1 ? 's' : ''} encontrado${visiveis !== 1 ? 's' : ''}` : '';
+}
+
+function limparFiltros() {
+  document.getElementById('filtroNome').value = '';
+  document.getElementById('filtroPapel').value = '';
+  filtrarUsuarios();
+}
+</script>
+{% endblock %}
 {% endblock %}

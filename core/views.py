@@ -134,3 +134,34 @@ def usuario_novo(request):
         messages.success(request, f'Usuário cadastrado com sucesso!')
         return redirect('usuarios')
     return render(request, 'usuario_form.html', {'form': form})
+
+
+@admin_ou_coord
+def usuario_editar(request, pk):
+    usuario = get_object_or_404(Usuario, pk=pk)
+    from .forms import UsuarioEditarForm
+    form = UsuarioEditarForm(request.POST or None, instance=usuario)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        messages.success(request, f'Usuário {usuario.get_full_name() or usuario.username} atualizado!')
+        return redirect('usuarios')
+    return render(request, 'usuario_editar.html', {'form': form, 'usuario': usuario})
+
+
+@admin_ou_coord
+def usuario_senha(request, pk):
+    usuario = get_object_or_404(Usuario, pk=pk)
+    erro = None
+    if request.method == 'POST':
+        senha = request.POST.get('senha', '')
+        confirma = request.POST.get('senha_confirma', '')
+        if len(senha) < 6:
+            erro = 'A senha deve ter pelo menos 6 caracteres.'
+        elif senha != confirma:
+            erro = 'As senhas não coincidem.'
+        else:
+            usuario.set_password(senha)
+            usuario.save()
+            messages.success(request, f'Senha de {usuario.get_full_name() or usuario.username} redefinida!')
+            return redirect('usuarios')
+    return render(request, 'usuario_senha.html', {'usuario': usuario, 'erro': erro})

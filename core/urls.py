@@ -16,4 +16,6 @@ urlpatterns = [
     # Usuários
     path('usuarios/', views.usuarios_lista, name='usuarios'),
     path('usuarios/novo/', views.usuario_novo, name='usuario_novo'),
+    path('usuarios/<int:pk>/editar/', views.usuario_editar, name='usuario_editar'),
+    path('usuarios/<int:pk>/senha/', views.usuario_senha, name='usuario_senha'),
 ]
