@@ -124,14 +124,6 @@ python manage.py runserver
 http://localhost:8000
 ```
 
-### Credenciais iniciais
-
-| Papel | Usuário | Senha |
-|---|---|---|
-| Administrador | admin | admin123 |
-
-> ⚠️ Altere a senha do administrador após o primeiro acesso.
-
 ---
 
 ## 👥 Papéis de Usuário
@@ -202,16 +194,16 @@ O **Nexus PI** foi desenvolvido com atenção aos princípios da **Lei nº 13.70
 
 | UC | Contribuição para o Projeto |
 |---|---|
-| Coding — Linguagens e Técnicas | Implementação das funcionalidades em Python/Django |
-| Banco de Dados | Modelagem e CRUD no sistema |
-| Engenharia de Requisitos | Levantamento de requisitos e documentação SRS (IEEE 830) |
-| Criatividade | Prototipação e design da interface |
-| Pesquisa, Tecnologia e Sociedade | Definição do problema e viabilidade |
-| Legislação | Proteção de dados (LGPD) e responsabilidade do desenvolvedor |
-| Unidade de Extensão | Integração entre disciplinas |
-| Tech English | README bilíngue (PT/EN) |
+| Coding — Linguagens e Técnicas | Implementação das funcionalidades em Python/Django | Prof. Guibson Santana |
+| Banco de Dados | Modelagem e CRUD no sistema | Prof. Heuryk Wylk |
+| Engenharia de Requisitos | Levantamento de requisitos e documentação SRS (IEEE 830) | Prof. Paulo Pimentel |
+| Criatividade | Prototipação e design da interface | Prof. Paulo Pimentel |
+| Pesquisa, Tecnologia e Sociedade | Definição do problema e viabilidade | Prof. Guibson Santana |
+| Legislação | Proteção de dados (LGPD) e responsabilidade do desenvolvedor | Profª. Renata Cristina |
+| Unidade de Extensão | Integração entre disciplinas | Prof. Arnott Ramos |
+| Tech English | README bilíngue (PT/EN) | Prof. Leonardo Trevas |
 
-**Professor Orientador:** _______________________________
+**Professor Orientador:** Prof. Guibson Santana.
 
 ---
 
@@ -227,11 +219,11 @@ Hospedado via [Render.com](https://render.com) com deploy automático a cada pus
 
 | Nome | Função | GitHub |
 |---|---|---|
-| [Arthur Andrey](https://github.com/thurzzinho) | Front-End | @thurzzinho |
-| [Gabriel Tenório](https://github.com/gaahtenorio) | Desenvolvimento | @gaahtenorio |
-| [Laiza Maria](https://github.com/laizalay) | Back-End | @laizalay |
-| [Luis Bezerra](https://github.com/luissbezerra) | Desenvolvimento | @luissbezerra |
-| [Renata Oliveira](https://github.com/srenataoliveira) | Desenvolvimento | @srenataoliveira |
+| [Arthur Andrey](https://github.com/thurzzinho) | Front-End |
+| [Gabriel Tenório](https://github.com/gaahtenorio) | Back-End |
+| [Laiza Maria](https://github.com/laizalay) | Full-stack |
+| [Luis Bezerra](https://github.com/luissbezerra) | Front-End |
+| [Renata Oliveira](https://github.com/srenataoliveira) | Desenvolvimento |
 
 ---
 
@@ -340,14 +332,6 @@ python manage.py runserver
 http://localhost:8000
 ```
 
-### Default credentials
-
-| Role | Username | Password |
-|---|---|---|
-| Administrator | admin | admin123 |
-
-> ⚠️ Change the administrator password after first access.
-
 ---
 
 ## 👥 User Roles
@@ -400,16 +384,16 @@ http://localhost:8000
 
 | Curricular Unit | Contribution to the Project |
 |---|---|
-| Coding — Languages and Techniques | Feature implementation in Python/Django |
-| Database | Modeling and CRUD in the system |
-| Requirements Engineering | Requirements gathering and SRS documentation (IEEE 830) |
-| Creativity | Interface prototyping and design |
-| Research, Technology and Society | Problem definition and feasibility |
-| Legislation | Data protection (LGPD) and developer responsibility |
-| Extension Unit | Integration between disciplines |
-| Tech English | Bilingual README (PT/EN) |
+| Coding — Languages and Techniques | Feature implementation in Python/Django | Teacher Guibson Santana |
+| Database | Modeling and CRUD in the system | Teacher Heuryk Wylk |
+| Requirements Engineering | Requirements gathering and SRS documentation (IEEE 830) | Teacher Paulo Pimentel |
+| Creativity | Interface prototyping and design | Teacher Paulo Pimentel |
+| Research, Technology and Society | Problem definition and feasibility | Teacher Guibson Santana |
+| Legislation | Data protection (LGPD) and developer responsibility | Teacher Renata Cristina |
+| Extension Unit | Integration between disciplines | Teacher Arnott Ramos |
+| Tech English | Bilingual README (PT/EN) | Teacher Leonardo Trevas |
 
-**Advisor Teacher:** _______________________________
+**Advisor Teacher:** Teacher Guibson Santana.
 
 ---
 
@@ -425,11 +409,11 @@ Hosted on [Render.com](https://render.com) with automatic deployment on every Gi
 
 | Name | Role | GitHub |
 |---|---|---|
-| [Arthur Andrey](https://github.com/thurzzinho) | Front-End | @thurzzinho |
-| [Gabriel Tenório](https://github.com/gaahtenorio) | Development | @gaahtenorio |
-| [Laiza Maria](https://github.com/laizalay) | Back-End | @laizalay |
-| [Luis Bezerra](https://github.com/luissbezerra) | Development | @luissbezerra |
-| [Renata Oliveira](https://github.com/srenataoliveira) | Development | @srenataoliveira |
+| [Arthur Andrey](https://github.com/thurzzinho) | Front-End |
+| [Gabriel Tenório](https://github.com/gaahtenorio) | Back-End |
+| [Laiza Maria](https://github.com/laizalay) | Full-Stack |
+| [Luis Bezerra](https://github.com/luissbezerra) | Front-End |
+| [Renata Oliveira](https://github.com/srenataoliveira) | Development |
 
 ---
 
