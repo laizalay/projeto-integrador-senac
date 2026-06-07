@@ -59,7 +59,9 @@
             <td class="td-date">{{ u.date_joined|date:"d/m/Y" }}</td>
             <td class="td-actions">
               <a href="{% url 'usuario_editar' u.pk %}" class="action-icon" title="Editar">✏️</a>
-              <a href="{% url 'usuario_senha' u.pk %}" class="action-icon" title="Redefinir senha">🔑</a>
+              {% if request.user.papel == 'admin' %}
+                <a href="{% url 'usuario_senha' u.pk %}" class="action-icon" title="Redefinir senha (Admin)">🔑</a>
+              {% endif %}
             </td>
           </tr>
           {% endfor %}

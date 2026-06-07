@@ -44,11 +44,20 @@
           {{ form.password }}
         </div>
       </div>
+
+      <!-- Campo turma — aparece só quando papel = aluno -->
+      <div class="form-group" id="campo-turma" style="display:none;">
+        <label class="form-label">Turma</label>
+        {{ form.turma }}
+        <p class="form-hint">Ex: ADS-2025-1, ADS-2026-M</p>
+      </div>
+
       {% for field in form %}
         {% if field.errors %}
           <p style="color:var(--danger);font-size:0.8rem;">{{ field.label }}: {{ field.errors|join:", " }}</p>
         {% endif %}
       {% endfor %}
+
       <div class="form-actions">
         <a href="{% url 'usuarios' %}" class="btn btn-outline">Cancelar</a>
         <button type="submit" class="btn btn-primary">Cadastrar Usuário</button>
@@ -56,4 +65,18 @@
     </form>
   </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  const papel = document.getElementById('id_papel');
+  const campoTurma = document.getElementById('campo-turma');
+
+  function toggleTurma() {
+    campoTurma.style.display = papel.value === 'aluno' ? 'block' : 'none';
+  }
+
+  papel.addEventListener('change', toggleTurma);
+  toggleTurma(); // roda ao carregar
+</script>
 {% endblock %}

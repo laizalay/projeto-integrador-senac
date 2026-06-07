@@ -21,6 +21,19 @@ def admin_ou_coord(f):
     return decorated
 
 
+def so_admin(f):
+    """Apenas Administrador acessa — manutenção técnica."""
+    @wraps(f)
+    def decorated(request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('login')
+        if request.user.papel != 'admin':
+            messages.error(request, 'Acesso restrito ao Administrador.')
+            return redirect('painel')
+        return f(request, *args, **kwargs)
+    return decorated
+
+
 def professor_required(f):
     @wraps(f)
     def decorated(request, *args, **kwargs):
@@ -244,7 +257,7 @@ def usuario_editar(request, pk):
     return render(request, 'usuario_editar.html', {'form': form, 'usuario': usuario})
 
 
-@admin_ou_coord
+@so_admin
 def usuario_senha(request, pk):
     usuario = get_object_or_404(Usuario, pk=pk)
     erro = None
