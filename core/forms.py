@@ -43,6 +43,11 @@ class UsuarioForm(forms.ModelForm):
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
         self.fields['turma'].required = False
+        # Remove 'admin' do dropdown — admin só é criado via comando
+        self.fields['papel'].choices = [
+            (k, v) for k, v in self.fields['papel'].choices
+            if k != 'admin'
+        ]
 
     def save(self, commit=True):
         user = super().save(commit=False)
