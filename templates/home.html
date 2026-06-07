@@ -3,26 +3,41 @@
 
 {% block content %}
 
-<!-- HERO -->
-<section style="min-height:88vh;display:grid;grid-template-columns:1fr 1fr;">
-  <div style="background:var(--azul);padding:4rem 3rem;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;">
+<!-- HERO: layout dividido azul + branco -->
+<section style="min-height: 88vh; display: grid; grid-template-columns: 1fr 1fr;">
+
+  <!-- Lado esquerdo — azul escuro -->
+  <div style="background: var(--azul); padding: 4rem 3rem; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden;">
+    <!-- Grade decorativa -->
     <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:48px 48px;"></div>
+    <!-- Círculo decorativo -->
     <div style="position:absolute;bottom:-80px;left:-80px;width:320px;height:320px;border-radius:50%;background:rgba(37,99,235,0.25);"></div>
+
     <div style="position:relative;">
-      <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(217,119,6,0.15);border:1px solid rgba(217,119,6,0.3);color:var(--amber-md);font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 1rem;border-radius:20px;margin-bottom:2rem;">✦ Senac · ADS</div>
+      <!-- Tag Senac -->
+      <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(217,119,6,0.15);border:1px solid rgba(217,119,6,0.3);color:var(--amber-md);font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 1rem;border-radius:20px;margin-bottom:2rem;">
+        ✦ Senac · ADS
+      </div>
+
       <h1 style="font-size:clamp(2rem,4vw,3rem);font-weight:800;color:white;letter-spacing:-0.04em;line-height:1.1;margin-bottom:1.25rem;">
-        Seus projetos.<br>Em um só lugar.<br>
+        Seus projetos.<br>
+        Em um só lugar.<br>
         <span style="background:linear-gradient(135deg,#F59E0B,#D97706);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Nexus PI.</span>
       </h1>
-      <p style="font-size:1rem;color:#94A3B8;line-height:1.75;margin-bottom:2.5rem;max-width:420px;">Plataforma centralizada para submissão, acompanhamento e avaliação dos projetos integradores do Senac.</p>
+
+      <p style="font-size:1rem;color:#94A3B8;line-height:1.75;margin-bottom:2.5rem;max-width:420px;">
+        Plataforma centralizada para submissão, acompanhamento e avaliação dos projetos integradores do Senac.
+      </p>
+
       <div style="display:flex;gap:1rem;flex-wrap:wrap;">
         {% if user.is_authenticated %}
           <a href="{% url 'painel' %}" class="btn btn-amber btn-lg">Acessar Painel →</a>
         {% else %}
           <a href="{% url 'login' %}" class="btn btn-amber btn-lg">Entrar no Sistema →</a>
         {% endif %}
-        <a href="{% url 'portfolio' %}" class="btn btn-outline btn-lg" style="border-color:rgba(255,255,255,0.2);color:#94A3B8;">Ver Portfólio →</a>
       </div>
+
+      <!-- Stats -->
       <div style="display:flex;gap:2rem;margin-top:3rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.08);">
         <div>
           <div style="font-size:2rem;font-weight:800;color:var(--amber-md);font-family:var(--mono);line-height:1;">{{ total_projetos }}</div>
@@ -36,85 +51,84 @@
     </div>
   </div>
 
-  <!-- Lado direito -->
+  <!-- Lado direito — branco com cards -->
   <div style="background:white;padding:4rem 3rem;display:flex;flex-direction:column;justify-content:center;gap:1.25rem;">
+
     <div style="margin-bottom:0.5rem;">
       <p style="font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--azul-lt);margin-bottom:0.5rem;">Como funciona</p>
       <h2 style="font-size:1.5rem;font-weight:800;color:var(--azul);letter-spacing:-0.03em;">Uma plataforma para todos</h2>
     </div>
-    {% for item in perfis %}
-    <div style="display:flex;align-items:flex-start;gap:1rem;padding:1.25rem;border:1px solid var(--border);border-radius:var(--radius);border-left:4px solid {{ item.cor }};background:var(--bg);">
-      <div style="width:42px;height:42px;border-radius:10px;background:{{ item.bg }};display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">{{ item.emoji }}</div>
+
+    <!-- Card Aluno -->
+    <div style="display:flex;align-items:flex-start;gap:1rem;padding:1.25rem;border:1px solid var(--border);border-radius:var(--radius);border-left:4px solid var(--azul-lt);background:var(--bg);transition:all 0.2s;">
+      <div style="width:42px;height:42px;border-radius:10px;background:#DBEAFE;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">🎓</div>
       <div>
-        <h3 style="font-size:0.9rem;font-weight:700;color:var(--azul);margin-bottom:0.25rem;">{{ item.nome }}</h3>
-        <p style="font-size:0.82rem;color:var(--text-2);line-height:1.5;">{{ item.desc }}</p>
+        <h3 style="font-size:0.9rem;font-weight:700;color:var(--azul);margin-bottom:0.25rem;">Alunos</h3>
+        <p style="font-size:0.82rem;color:var(--text-2);line-height:1.5;">Submetem e gerenciam projetos com CRUD completo e histórico de versões.</p>
       </div>
     </div>
-    {% endfor %}
+
+    <!-- Card Professor -->
+    <div style="display:flex;align-items:flex-start;gap:1rem;padding:1.25rem;border:1px solid var(--border);border-radius:var(--radius);border-left:4px solid #7C3AED;background:var(--bg);">
+      <div style="width:42px;height:42px;border-radius:10px;background:#EDE9FE;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">👨‍🏫</div>
+      <div>
+        <h3 style="font-size:0.9rem;font-weight:700;color:var(--azul);margin-bottom:0.25rem;">Professores</h3>
+        <p style="font-size:0.82rem;color:var(--text-2);line-height:1.5;">Avaliam projetos diretamente na plataforma com registro de autoria.</p>
+      </div>
+    </div>
+
+    <!-- Card Coordenador -->
+    <div style="display:flex;align-items:flex-start;gap:1rem;padding:1.25rem;border:1px solid var(--border);border-radius:var(--radius);border-left:4px solid var(--amber);background:var(--bg);">
+      <div style="width:42px;height:42px;border-radius:10px;background:#FEF3C7;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">🏛</div>
+      <div>
+        <h3 style="font-size:0.9rem;font-weight:700;color:var(--azul);margin-bottom:0.25rem;">Coordenação & Admin</h3>
+        <p style="font-size:0.82rem;color:var(--text-2);line-height:1.5;">Visão geral de todas as turmas, relatórios e gestão completa de usuários.</p>
+      </div>
+    </div>
+
+    <!-- Card Empresa -->
+    <div style="display:flex;align-items:flex-start;gap:1rem;padding:1.25rem;border:1px solid var(--border);border-radius:var(--radius);border-left:4px solid var(--success);background:var(--bg);">
+      <div style="width:42px;height:42px;border-radius:10px;background:#D1FAE5;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">🏢</div>
+      <div>
+        <h3 style="font-size:0.9rem;font-weight:700;color:var(--azul);margin-bottom:0.25rem;">Empresas Parceiras</h3>
+        <p style="font-size:0.82rem;color:var(--text-2);line-height:1.5;">Consultam portfólio público e identificam novos talentos.</p>
+      </div>
+    </div>
+
   </div>
 </section>
 
-<!-- VITRINE DE PROJETOS -->
+<!-- PROJETOS RECENTES -->
 {% if projetos_recentes %}
-<section style="padding:5rem 2rem;background:var(--bg);">
+<section style="padding:4rem 2rem;background:var(--bg);">
   <div style="max-width:1100px;margin:0 auto;">
-    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:2.5rem;flex-wrap:wrap;gap:1rem;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;">
       <div>
-        <p class="section-eyebrow">✦ Vitrine de Projetos</p>
-        <h2 class="section-title">Projetos dos Alunos</h2>
-        <p style="color:var(--text-2);font-size:0.9rem;margin-top:0.25rem;">Conheça o que está sendo desenvolvido. Clique no GitHub para ver o código.</p>
+        <p class="section-eyebrow">Últimas submissões</p>
+        <h2 class="section-title">Projetos Recentes</h2>
       </div>
-      <a href="{% url 'portfolio' %}" class="btn btn-outline">Ver portfólio completo →</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'painel' %}" class="btn btn-outline">Ver todos →</a>
+      {% endif %}
     </div>
-
-    <div style="display:flex;flex-direction:column;gap:1rem;">
+    <div class="projetos-grid">
       {% for projeto in projetos_recentes %}
-      <div style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:1.75rem 2rem;box-shadow:var(--shadow-sm);display:flex;align-items:flex-start;gap:2rem;transition:all 0.2s;"
-           onmouseover="this.style.boxShadow='var(--shadow)';this.style.borderColor='var(--azul-lt)';this.style.transform='translateX(4px)'"
-           onmouseout="this.style.boxShadow='var(--shadow-sm)';this.style.borderColor='var(--border)';this.style.transform='translateX(0)'">
-
-        <!-- Número decorativo -->
-        <div style="font-size:2.5rem;font-weight:800;color:var(--border);font-family:var(--mono);line-height:1;flex-shrink:0;user-select:none;">
-          {{ forloop.counter|stringformat:"02d" }}
+      <div class="projeto-card">
+        <div class="projeto-card-header">
+          <h3 class="projeto-card-title">{{ projeto.titulo }}</h3>
+          <span class="badge badge-{{ projeto.status_cor }}">{{ projeto.get_status_display }}</span>
         </div>
-
-        <!-- Conteúdo principal -->
-        <div style="flex:1;min-width:0;">
-          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:0.6rem;">
-            <div>
-              <h3 style="font-size:1.1rem;font-weight:800;color:var(--azul);letter-spacing:-0.02em;margin-bottom:0.25rem;">{{ projeto.titulo }}</h3>
-              <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
-                <span style="font-size:0.8rem;color:var(--text-3);">
-                  por <strong style="color:var(--text-2);">{{ projeto.autor.get_full_name|default:projeto.autor.username }}</strong>
-                </span>
-                {% if projeto.membros_grupo %}
-                  <span style="font-size:0.78rem;color:var(--text-3);">· {{ projeto.membros_grupo }}</span>
-                {% endif %}
-                {% if projeto.turma %}
-                  <span class="tag" style="font-size:0.68rem;">{{ projeto.turma }}</span>
-                {% endif %}
-              </div>
-            </div>
-            <span class="badge badge-{{ projeto.status_cor }}">{{ projeto.get_status_display }}</span>
-          </div>
-
-          <p style="font-size:0.875rem;color:var(--text-2);line-height:1.6;margin-bottom:1rem;">{{ projeto.descricao|truncatechars:160 }}</p>
-
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.75rem;">
-            <div class="tags-list">
-              {% for tech in projeto.get_tecnologias_lista %}
-                <span class="tag">{{ tech }}</span>
-              {% endfor %}
-            </div>
-            {% if projeto.link_github %}
-              <a href="{{ projeto.link_github }}" target="_blank"
-                 style="display:inline-flex;align-items:center;gap:0.4rem;font-size:0.82rem;font-weight:600;color:var(--azul);border:1.5px solid var(--border);padding:0.35rem 0.85rem;border-radius:6px;text-decoration:none;transition:all 0.2s;background:white;"
-                 onmouseover="this.style.borderColor='var(--azul)';this.style.background='var(--azul-pale)'"
-                 onmouseout="this.style.borderColor='var(--border)';this.style.background='white'">
-                🐙 Ver no GitHub
-              </a>
-            {% endif %}
-          </div>
+        <p class="projeto-card-desc">{{ projeto.descricao|truncatechars:110 }}</p>
+        {% if projeto.get_tecnologias_lista %}
+        <div class="tags-list">
+          {% for tech in projeto.get_tecnologias_lista|slice:":4" %}
+            <span class="tag">{{ tech }}</span>
+          {% endfor %}
+        </div>
+        {% endif %}
+        <div class="projeto-card-footer">
+          <span>{{ projeto.autor.get_full_name|default:projeto.autor.username }}</span>
+          <span>{{ projeto.criado_em|date:"d/m/Y" }}</span>
         </div>
       </div>
       {% endfor %}
