@@ -121,10 +121,12 @@
             <td class="td-actions">
               <a href="{% url 'projeto_detalhe' projeto.pk %}" class="action-icon" title="Ver">👁</a>
               {% if user.is_professor %}
-                <a href="{% url 'projeto_avaliar' projeto.pk %}" class="action-icon" title="Avaliar" style="color:var(--amber);">⭐</a>
-              {% else %}
-                <a href="{% url 'projeto_editar' projeto.pk %}" class="action-icon" title="Editar">✏️</a>
-                <a href="{% url 'projeto_excluir' projeto.pk %}" class="action-icon danger" title="Excluir">🗑</a>
+              <a href="{% url 'projeto_avaliar' projeto.pk %}" class="action-icon" title="Avaliar" style="color:var(--amber);">⭐</a>
+              {% elif user.papel == 'aluno' %}
+              <a href="{% url 'projeto_editar' projeto.pk %}" class="action-icon" title="Editar">✏️</a>
+              <a href="{% url 'projeto_excluir' projeto.pk %}" class="action-icon danger" title="Excluir">🗑</a>
+              {% elif user.is_admin_ou_coord %}
+              <a href="{% url 'projeto_excluir' projeto.pk %}" class="action-icon danger" title="Excluir">🗑</a>
               {% endif %}
             </td>
           </tr>
