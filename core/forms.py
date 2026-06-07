@@ -83,6 +83,7 @@ class ProjetoForm(forms.ModelForm):
     class Meta:
         model = Projeto
         fields = ['titulo', 'descricao', 'tecnologias', 'link_github', 'turma', 'membros_grupo', 'status']
+        # status 'avaliado' é definido automaticamente pelo professor
         labels = {
             'titulo': 'Título do Projeto',
             'descricao': 'Descrição',
@@ -106,6 +107,12 @@ class ProjetoForm(forms.ModelForm):
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
         self.fields['turma'].required = False
+        self.fields['membros_grupo'].required = False
+        # Remove 'avaliado' — definido automaticamente pelo professor
+        self.fields['status'].choices = [
+            (k, v) for k, v in self.fields['status'].choices
+            if k != 'avaliado'
+        ]
 
 
 class AvaliacaoForm(forms.ModelForm):
