@@ -42,6 +42,7 @@ class Projeto(models.Model):
     link_github = models.URLField(blank=True, verbose_name="Link do GitHub")
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='desenvolvimento')
     turma = models.CharField(max_length=50, blank=True, null=True, verbose_name="Turma")
+    membros_grupo = models.CharField(max_length=500, blank=True, null=True, verbose_name="Membros do Grupo")
     autor = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='projetos')
     criado_em = models.DateTimeField(auto_now_add=True)
     atualizado_em = models.DateTimeField(auto_now=True)

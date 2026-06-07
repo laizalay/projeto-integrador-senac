@@ -38,6 +38,12 @@
       </div>
     </div>
     {% endif %}
+    {% if projeto.membros_grupo %}
+    <div class="detail-section">
+      <span class="detail-label">Membros do Grupo</span>
+      <p class="detail-value">👥 {{ projeto.membros_grupo }}</p>
+    </div>
+    {% endif %}
     {% if projeto.link_github %}
     <div class="detail-section">
       <span class="detail-label">Repositório GitHub</span>

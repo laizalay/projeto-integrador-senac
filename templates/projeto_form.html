@@ -21,8 +21,10 @@
             {% if field.field.required %}<span class="form-required">*</span>{% endif %}
           </label>
           {{ field }}
-          {% if field.help_text %}
-            <p class="form-hint">{{ field.help_text }}</p>
+          {% if field.name == 'membros_grupo' %}
+            <p class="form-hint">Separe os nomes por vírgula. Ex: João Silva, Maria Santos</p>
+          {% elif field.name == 'tecnologias' %}
+            <p class="form-hint">Separe as tecnologias por vírgula.</p>
           {% endif %}
           {% if field.errors %}
             <p style="color:var(--danger);font-size:0.8rem;margin-top:0.3rem;">{{ field.errors|join:", " }}</p>

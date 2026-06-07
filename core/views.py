@@ -50,11 +50,18 @@ def professor_required(f):
 def home(request):
     total_projetos = Projeto.objects.count()
     total_alunos = Usuario.objects.filter(papel='aluno').count()
-    projetos_recentes = Projeto.objects.select_related('autor').order_by('-criado_em')[:4]
+    projetos_recentes = Projeto.objects.select_related('autor').order_by('-criado_em')[:6]
+    perfis = [
+        {'emoji': '🎓', 'nome': 'Alunos', 'desc': 'Submetem e gerenciam projetos com CRUD completo.', 'cor': 'var(--azul-lt)', 'bg': '#DBEAFE'},
+        {'emoji': '👨‍🏫', 'nome': 'Professores', 'desc': 'Avaliam projetos com rubrica e registram feedback.', 'cor': '#7C3AED', 'bg': '#EDE9FE'},
+        {'emoji': '🏛', 'nome': 'Coordenação & Admin', 'desc': 'Dashboard completo com acompanhamento geral.', 'cor': 'var(--amber)', 'bg': '#FEF3C7'},
+        {'emoji': '🏢', 'nome': 'Empresas Parceiras', 'desc': 'Consultam portfólio e identificam novos talentos.', 'cor': 'var(--success)', 'bg': '#D1FAE5'},
+    ]
     return render(request, 'home.html', {
         'total_projetos': total_projetos,
         'total_alunos': total_alunos,
         'projetos_recentes': projetos_recentes,
+        'perfis': perfis,
     })
 
 
@@ -238,7 +245,7 @@ def usuarios_lista(request):
 
 @admin_ou_coord
 def usuario_novo(request):
-    form = UsuarioForm(request.POST or None)
+    form = UsuarioForm(request.POST or None, usuario_logado=request.user)
     if request.method == 'POST' and form.is_valid():
         form.save()
         messages.success(request, 'Usuário cadastrado com sucesso!')

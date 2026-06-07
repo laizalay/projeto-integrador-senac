@@ -39,10 +39,17 @@ class UsuarioForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        self.usuario_logado = kwargs.pop('usuario_logado', None)
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
         self.fields['turma'].required = False
+        # Só admin pode cadastrar outro admin
+        if not self.usuario_logado or self.usuario_logado.papel != 'admin':
+            self.fields['papel'].choices = [
+                (k, v) for k, v in self.fields['papel'].choices
+                if k != 'admin'
+            ]
 
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -75,13 +82,14 @@ class UsuarioEditarForm(forms.ModelForm):
 class ProjetoForm(forms.ModelForm):
     class Meta:
         model = Projeto
-        fields = ['titulo', 'descricao', 'tecnologias', 'link_github', 'turma', 'status']
+        fields = ['titulo', 'descricao', 'tecnologias', 'link_github', 'turma', 'membros_grupo', 'status']
         labels = {
             'titulo': 'Título do Projeto',
             'descricao': 'Descrição',
             'tecnologias': 'Tecnologias Utilizadas',
             'link_github': 'Link do GitHub',
             'turma': 'Turma',
+            'membros_grupo': 'Membros do Grupo',
             'status': 'Status',
         }
         widgets = {
@@ -90,6 +98,7 @@ class ProjetoForm(forms.ModelForm):
             'tecnologias': forms.TextInput(attrs={'placeholder': 'Python, Django, SQLite, HTML, CSS'}),
             'link_github': forms.URLInput(attrs={'placeholder': 'https://github.com/usuario/repositorio'}),
             'turma': forms.TextInput(attrs={'placeholder': 'Ex: ADS-2025-1'}),
+            'membros_grupo': forms.TextInput(attrs={'placeholder': 'Ex: João Silva, Maria Santos, Pedro Oliveira'}),
         }
 
     def __init__(self, *args, **kwargs):

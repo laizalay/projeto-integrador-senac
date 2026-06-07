@@ -78,7 +78,12 @@
       {% endwith %}
 
       <div class="projeto-card-footer">
-        <span style="font-weight:600;">{{ projeto.autor.get_full_name|default:projeto.autor.username }}</span>
+        <div>
+          <span style="font-weight:600;">{{ projeto.autor.get_full_name|default:projeto.autor.username }}</span>
+          {% if projeto.membros_grupo %}
+            <span style="font-size:0.75rem;color:var(--text-3);display:block;margin-top:0.1rem;">👥 {{ projeto.membros_grupo }}</span>
+          {% endif %}
+        </div>
         <div style="display:flex;gap:0.5rem;align-items:center;">
           {% if projeto.turma %}<span class="tag" style="font-size:0.68rem;">{{ projeto.turma }}</span>{% endif %}
           {% if projeto.link_github %}
