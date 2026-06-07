@@ -22,7 +22,6 @@
 
     <ul class="navbar-nav">
       <li><a href="{% url 'home' %}" class="nav-link-item">Início</a></li>
-      <li><a href="{% url 'portfolio' %}" class="nav-link-item">Portfólio</a></li>
       {% if user.is_authenticated %}
         <li><a href="{% url 'painel' %}" class="nav-link-item">Painel</a></li>
         {% if user.is_admin_ou_coord %}
@@ -64,7 +63,7 @@
   </main>
 
   <footer>
-    <span>© 2026 Nexus PI — Senac · Fecomércio Sesc · Análise e Desenvolvimento de Sistemas</span>
+    <span>© 2026 Nexus PI — Senac · Análise e Desenvolvimento de Sistemas</span>
   </footer>
 
   <script>
