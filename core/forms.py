@@ -39,17 +39,17 @@ class UsuarioForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-    self.usuario_logado = kwargs.pop('usuario_logado', None)
-    super().__init__(*args, **kwargs)
-    for field in self.fields.values():
-        field.widget.attrs['class'] = 'form-control'
-    self.fields['turma'].required = False
-    
-    if not self.usuario_logado or self.usuario_logado.papel != 'admin':
-        self.fields['papel'].choices = [
-            (k, v) for k, v in self.fields['papel'].choices
-            if k != 'admin'
-        ]
+        self.usuario_logado = kwargs.pop('usuario_logado', None)
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
+        self.fields['turma'].required = False
+        # Só admin pode cadastrar outro admin
+        if not self.usuario_logado or self.usuario_logado.papel != 'admin':
+            self.fields['papel'].choices = [
+                (k, v) for k, v in self.fields['papel'].choices
+                if k != 'admin'
+            ]
 
     def save(self, commit=True):
         user = super().save(commit=False)
