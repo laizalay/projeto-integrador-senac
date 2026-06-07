@@ -1,12 +1,12 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
-from .models import Usuario, Projeto
+from .models import Usuario, Projeto, Avaliacao
 
 
 class LoginForm(AuthenticationForm):
     username = forms.CharField(
-    label="Usuário",
-    widget=forms.TextInput(attrs={'placeholder': 'admin', 'autofocus': True})
+        label="Usuário",
+        widget=forms.TextInput(attrs={'placeholder': 'seu usuário', 'autofocus': True})
     )
     password = forms.CharField(
         label="Senha",
@@ -28,19 +28,21 @@ class UsuarioForm(forms.ModelForm):
 
     class Meta:
         model = Usuario
-        fields = ['first_name', 'last_name', 'username', 'email', 'papel', 'password']
+        fields = ['first_name', 'last_name', 'username', 'email', 'papel', 'turma', 'password']
         labels = {
             'first_name': 'Nome',
             'last_name': 'Sobrenome',
             'username': 'Nome de usuário',
             'email': 'E-mail',
             'papel': 'Papel',
+            'turma': 'Turma',
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
+        self.fields['turma'].required = False
 
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -50,15 +52,36 @@ class UsuarioForm(forms.ModelForm):
         return user
 
 
+class UsuarioEditarForm(forms.ModelForm):
+    class Meta:
+        model = Usuario
+        fields = ['first_name', 'last_name', 'username', 'email', 'papel', 'turma']
+        labels = {
+            'first_name': 'Nome',
+            'last_name': 'Sobrenome',
+            'username': 'Nome de usuário',
+            'email': 'E-mail',
+            'papel': 'Papel',
+            'turma': 'Turma',
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
+        self.fields['turma'].required = False
+
+
 class ProjetoForm(forms.ModelForm):
     class Meta:
         model = Projeto
-        fields = ['titulo', 'descricao', 'tecnologias', 'link_github', 'status']
+        fields = ['titulo', 'descricao', 'tecnologias', 'link_github', 'turma', 'status']
         labels = {
             'titulo': 'Título do Projeto',
             'descricao': 'Descrição',
             'tecnologias': 'Tecnologias Utilizadas',
             'link_github': 'Link do GitHub',
+            'turma': 'Turma',
             'status': 'Status',
         }
         widgets = {
@@ -66,27 +89,36 @@ class ProjetoForm(forms.ModelForm):
             'descricao': forms.Textarea(attrs={'rows': 5, 'placeholder': 'Descreva o objetivo, problema resolvido e funcionalidades...'}),
             'tecnologias': forms.TextInput(attrs={'placeholder': 'Python, Django, SQLite, HTML, CSS'}),
             'link_github': forms.URLInput(attrs={'placeholder': 'https://github.com/usuario/repositorio'}),
+            'turma': forms.TextInput(attrs={'placeholder': 'Ex: ADS-2025-1'}),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
+        self.fields['turma'].required = False
 
 
-class UsuarioEditarForm(forms.ModelForm):
+class AvaliacaoForm(forms.ModelForm):
     class Meta:
-        model = Usuario
-        fields = ['first_name', 'last_name', 'username', 'email', 'papel']
+        model = Avaliacao
+        fields = ['nota_desenvolvimento', 'nota_documentacao',
+                  'nota_apresentacao', 'nota_inovacao', 'comentario']
         labels = {
-            'first_name': 'Nome',
-            'last_name': 'Sobrenome',
-            'username': 'Nome de usuário',
-            'email': 'E-mail',
-            'papel': 'Papel',
+            'nota_desenvolvimento': 'Desenvolvimento Técnico',
+            'nota_documentacao': 'Documentação',
+            'nota_apresentacao': 'Apresentação',
+            'nota_inovacao': 'Inovação e Criatividade',
+            'comentario': 'Comentários e Feedback',
+        }
+        widgets = {
+            'comentario': forms.Textarea(attrs={
+                'rows': 4,
+                'placeholder': 'Deixe seu feedback sobre o projeto...'
+            }),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.fields.values():
+        for name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'

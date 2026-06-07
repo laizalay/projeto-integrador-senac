@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block title %}Portfólio Público{% endblock %}
+
+{% block content %}
+
+<!-- Header do portfólio -->
+<div style="background:var(--azul);padding:3rem 2rem;position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:48px 48px;"></div>
+  <div style="max-width:1100px;margin:0 auto;position:relative;">
+    <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(217,119,6,0.15);border:1px solid rgba(217,119,6,0.3);color:var(--amber-md);font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 1rem;border-radius:20px;margin-bottom:1rem;">
+      🏢 Área para Empresas Parceiras
+    </div>
+    <h1 style="font-size:2rem;font-weight:800;color:white;letter-spacing:-0.03em;margin-bottom:0.75rem;">
+      Portfólio de Projetos Integradores
+    </h1>
+    <p style="color:#94A3B8;font-size:1rem;max-width:560px;">
+      Conheça os projetos desenvolvidos pelos alunos do Senac. Identifique talentos e oportunidades de recrutamento.
+    </p>
+  </div>
+</div>
+
+<div class="container-main">
+
+  <!-- Filtros -->
+  <div style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
+    <form method="GET" style="display:flex;gap:1rem;flex-wrap:wrap;align-items:flex-end;">
+      <div style="flex:1;min-width:200px;">
+        <label style="font-size:0.78rem;font-weight:600;color:var(--azul);display:block;margin-bottom:0.4rem;">Buscar por Tecnologia</label>
+        <input type="text" name="tech" value="{{ tecnologia }}" placeholder="Ex: Python, React, Django..." class="form-control" style="margin:0;">
+      </div>
+      {% if turmas %}
+      <div style="min-width:180px;">
+        <label style="font-size:0.78rem;font-weight:600;color:var(--azul);display:block;margin-bottom:0.4rem;">Filtrar por Turma</label>
+        <select name="turma" class="form-control" style="margin:0;">
+          <option value="">Todas as turmas</option>
+          {% for t in turmas %}
+            <option value="{{ t }}" {% if turma == t %}selected{% endif %}>{{ t }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      {% endif %}
+      <button type="submit" class="btn btn-primary" style="height:42px;">Buscar</button>
+      <a href="{% url 'portfolio' %}" class="btn btn-outline" style="height:42px;">Limpar</a>
+    </form>
+  </div>
+
+  <p style="font-size:0.85rem;color:var(--text-3);margin-bottom:1.25rem;">
+    {{ total }} projeto{{ total|pluralize }} encontrado{{ total|pluralize }}
+    {% if tecnologia %} para "<strong>{{ tecnologia }}</strong>"{% endif %}
+    {% if turma %} na turma <strong>{{ turma }}</strong>{% endif %}
+  </p>
+
+  {% if projetos %}
+  <div class="projetos-grid">
+    {% for projeto in projetos %}
+    <div class="projeto-card">
+      <div class="projeto-card-header">
+        <h3 class="projeto-card-title">{{ projeto.titulo }}</h3>
+        <span class="badge badge-{{ projeto.status_cor }}">{{ projeto.get_status_display }}</span>
+      </div>
+
+      <p class="projeto-card-desc">{{ projeto.descricao|truncatechars:130 }}</p>
+
+      {% if projeto.get_tecnologias_lista %}
+      <div class="tags-list">
+        {% for tech in projeto.get_tecnologias_lista %}
+          <span class="tag">{{ tech }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {% with av=projeto.avaliacao %}
+        {% if av %}
+        <div style="background:var(--success-lt);border:1px solid var(--success);border-radius:var(--radius-sm);padding:0.6rem 0.85rem;font-size:0.82rem;color:var(--success);font-weight:600;">
+          ⭐ Média: {{ av.media }}/10
+        </div>
+        {% endif %}
+      {% endwith %}
+
+      <div class="projeto-card-footer">
+        <span style="font-weight:600;">{{ projeto.autor.get_full_name|default:projeto.autor.username }}</span>
+        <div style="display:flex;gap:0.5rem;align-items:center;">
+          {% if projeto.turma %}<span class="tag" style="font-size:0.68rem;">{{ projeto.turma }}</span>{% endif %}
+          {% if projeto.link_github %}
+            <a href="{{ projeto.link_github }}" target="_blank" style="font-size:0.78rem;color:var(--azul-lt);">GitHub ⎋</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% else %}
+  <div class="empty-state">
+    <span class="empty-icon">🔍</span>
+    <h3>Nenhum projeto encontrado</h3>
+    <p>Tente outros termos de busca ou remova os filtros.</p>
+    <a href="{% url 'portfolio' %}" class="btn btn-outline">Ver todos os projetos</a>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

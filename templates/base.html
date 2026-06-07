@@ -22,9 +22,11 @@
 
     <ul class="navbar-nav">
       <li><a href="{% url 'home' %}" class="nav-link-item">Início</a></li>
+      <li><a href="{% url 'portfolio' %}" class="nav-link-item">Portfólio</a></li>
       {% if user.is_authenticated %}
         <li><a href="{% url 'painel' %}" class="nav-link-item">Painel</a></li>
         {% if user.is_admin_ou_coord %}
+          <li><a href="{% url 'dashboard' %}" class="nav-link-item">Dashboard</a></li>
           <li><a href="{% url 'usuarios' %}" class="nav-link-item">Usuários</a></li>
         {% endif %}
         <li>
@@ -66,7 +68,6 @@
   </footer>
 
   <script>
-    // Auto-remove flash messages
     document.querySelectorAll('.flash').forEach(f => {
       setTimeout(() => {
         f.style.opacity = '0';

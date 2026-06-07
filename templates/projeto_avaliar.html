@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block title %}Avaliar — {{ projeto.titulo }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">{% if avaliacao %}Editar Avaliação{% else %}Avaliar Projeto{% endif %}</h1>
+    <p class="page-subtitle">Projeto: <strong>{{ projeto.titulo }}</strong> · Aluno: {{ projeto.autor.get_full_name|default:projeto.autor.username }}</p>
+  </div>
+  <a href="{% url 'painel' %}" class="btn btn-outline">← Voltar</a>
+</div>
+
+<div class="container-main">
+  <div class="form-card" style="max-width:760px;">
+
+    <!-- Info do projeto -->
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1.25rem;margin-bottom:2rem;">
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:0.75rem;">
+        <span class="badge badge-{{ projeto.status_cor }}">{{ projeto.get_status_display }}</span>
+        {% if projeto.turma %}<span class="tag">{{ projeto.turma }}</span>{% endif %}
+      </div>
+      <p style="font-size:0.875rem;color:var(--text-2);line-height:1.6;">{{ projeto.descricao|truncatechars:200 }}</p>
+      {% if projeto.link_github %}
+        <a href="{{ projeto.link_github }}" target="_blank" style="font-size:0.82rem;color:var(--azul-lt);margin-top:0.5rem;display:inline-block;">⎋ Ver no GitHub</a>
+      {% endif %}
+    </div>
+
+    <!-- Rubrica -->
+    <h3 style="font-size:1rem;font-weight:700;color:var(--azul);margin-bottom:1.25rem;">📋 Rubrica de Avaliação</h3>
+
+    <form method="POST">
+      {% csrf_token %}
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.5rem;">
+
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1.25rem;">
+          <label class="form-label" style="margin-bottom:0.25rem;">
+            💻 {{ form.nota_desenvolvimento.label }}
+          </label>
+          <p style="font-size:0.78rem;color:var(--text-3);margin-bottom:0.75rem;">Qualidade do código, funcionalidades e tecnologias aplicadas</p>
+          {{ form.nota_desenvolvimento }}
+        </div>
+
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1.25rem;">
+          <label class="form-label" style="margin-bottom:0.25rem;">
+            📄 {{ form.nota_documentacao.label }}
+          </label>
+          <p style="font-size:0.78rem;color:var(--text-3);margin-bottom:0.75rem;">README, SRS, organização do repositório</p>
+          {{ form.nota_documentacao }}
+        </div>
+
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1.25rem;">
+          <label class="form-label" style="margin-bottom:0.25rem;">
+            🎤 {{ form.nota_apresentacao.label }}
+          </label>
+          <p style="font-size:0.78rem;color:var(--text-3);margin-bottom:0.75rem;">Clareza na explicação e demonstração do sistema</p>
+          {{ form.nota_apresentacao }}
+        </div>
+
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1.25rem;">
+          <label class="form-label" style="margin-bottom:0.25rem;">
+            💡 {{ form.nota_inovacao.label }}
+          </label>
+          <p style="font-size:0.78rem;color:var(--text-3);margin-bottom:0.75rem;">Diferencial, criatividade e proposta de valor</p>
+          {{ form.nota_inovacao }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">💬 {{ form.comentario.label }}</label>
+        {{ form.comentario }}
+      </div>
+
+      <!-- Info do avaliador -->
+      <div style="background:var(--azul-pale);border:1px solid var(--azul-lt);border-radius:var(--radius-sm);padding:1rem;margin-top:1rem;font-size:0.82rem;color:var(--azul);">
+        📌 Esta avaliação será registrada em nome de <strong>{{ request.user.get_full_name|default:request.user.username }}</strong> em {{ request.user.get_papel_display }}.
+      </div>
+
+      <div class="form-actions">
+        <a href="{% url 'painel' %}" class="btn btn-outline">Cancelar</a>
+        <button type="submit" class="btn btn-primary">
+          {% if avaliacao %}Atualizar Avaliação{% else %}Registrar Avaliação{% endif %}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

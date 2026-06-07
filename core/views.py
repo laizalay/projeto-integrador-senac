@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.db.models import Count, Q
+from django.db.models import Count, Avg
 from functools import wraps
-from .models import Usuario, Projeto
-from .forms import LoginForm, UsuarioForm, ProjetoForm
+from .models import Usuario, Projeto, Avaliacao
+from .forms import LoginForm, UsuarioForm, UsuarioEditarForm, ProjetoForm, AvaliacaoForm
 
 
 # ─── DECORADORES ───
@@ -21,6 +21,18 @@ def admin_ou_coord(f):
     return decorated
 
 
+def professor_required(f):
+    @wraps(f)
+    def decorated(request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('login')
+        if not request.user.is_professor and not request.user.is_admin_ou_coord:
+            messages.error(request, 'Acesso restrito a professores.')
+            return redirect('painel')
+        return f(request, *args, **kwargs)
+    return decorated
+
+
 # ─── PÚBLICAS ───
 def home(request):
     total_projetos = Projeto.objects.count()
@@ -30,6 +42,25 @@ def home(request):
         'total_projetos': total_projetos,
         'total_alunos': total_alunos,
         'projetos_recentes': projetos_recentes,
+    })
+
+
+def portfolio_publico(request):
+    """Página pública para empresas consultarem projetos concluídos."""
+    tecnologia = request.GET.get('tech', '')
+    turma = request.GET.get('turma', '')
+    projetos = Projeto.objects.filter(status__in=['concluido', 'avaliado']).select_related('autor')
+    if tecnologia:
+        projetos = projetos.filter(tecnologias__icontains=tecnologia)
+    if turma:
+        projetos = projetos.filter(turma__icontains=turma)
+    turmas = Projeto.objects.exclude(turma__isnull=True).exclude(turma='').values_list('turma', flat=True).distinct()
+    return render(request, 'portfolio.html', {
+        'projetos': projetos,
+        'tecnologia': tecnologia,
+        'turma': turma,
+        'turmas': turmas,
+        'total': projetos.count(),
     })
 
 
@@ -55,19 +86,34 @@ def logout_view(request):
 @login_required
 def painel(request):
     usuario = request.user
-    if usuario.is_admin_ou_coord or usuario.is_professor:
-        projetos = Projeto.objects.select_related('autor').all()
-    else:
-        projetos = Projeto.objects.filter(autor=usuario)
+    turma_filtro = request.GET.get('turma', '')
+    status_filtro = request.GET.get('status', '')
 
-    # Stats para o painel
+    if usuario.is_admin_ou_coord or usuario.is_professor:
+        projetos = Projeto.objects.select_related('autor').prefetch_related('avaliacoes')
+    else:
+        projetos = Projeto.objects.filter(autor=usuario).prefetch_related('avaliacoes')
+
+    if turma_filtro:
+        projetos = projetos.filter(turma__icontains=turma_filtro)
+    if status_filtro:
+        projetos = projetos.filter(status=status_filtro)
+
+    turmas = Projeto.objects.exclude(turma__isnull=True).exclude(turma='').values_list('turma', flat=True).distinct()
+
     stats = {
         'total': projetos.count(),
         'desenvolvimento': projetos.filter(status='desenvolvimento').count(),
         'concluido': projetos.filter(status='concluido').count(),
         'avaliado': projetos.filter(status='avaliado').count(),
     }
-    return render(request, 'painel.html', {'projetos': projetos, 'stats': stats})
+    return render(request, 'painel.html', {
+        'projetos': projetos,
+        'stats': stats,
+        'turmas': turmas,
+        'turma_filtro': turma_filtro,
+        'status_filtro': status_filtro,
+    })
 
 
 # ─── CRUD PROJETOS ───
@@ -89,7 +135,8 @@ def projeto_detalhe(request, pk):
     if projeto.autor != request.user and not request.user.is_admin_ou_coord and not request.user.is_professor:
         messages.error(request, 'Você não tem permissão para ver este projeto.')
         return redirect('painel')
-    return render(request, 'projeto_detalhe.html', {'projeto': projeto})
+    avaliacao = projeto.avaliacoes.first()
+    return render(request, 'projeto_detalhe.html', {'projeto': projeto, 'avaliacao': avaliacao})
 
 
 @login_required
@@ -119,6 +166,56 @@ def projeto_excluir(request, pk):
     return render(request, 'projeto_confirmar_exclusao.html', {'projeto': projeto})
 
 
+# ─── AVALIAÇÃO (Professor) ───
+@professor_required
+def projeto_avaliar(request, pk):
+    projeto = get_object_or_404(Projeto, pk=pk)
+    avaliacao_existente = projeto.avaliacoes.filter(professor=request.user).first()
+    form = AvaliacaoForm(request.POST or None, instance=avaliacao_existente)
+    if request.method == 'POST' and form.is_valid():
+        avaliacao = form.save(commit=False)
+        avaliacao.projeto = projeto
+        avaliacao.professor = request.user
+        avaliacao.save()
+        projeto.status = 'avaliado'
+        projeto.save()
+        messages.success(request, f'Avaliação registrada! Média: {avaliacao.media}/10')
+        return redirect('painel')
+    return render(request, 'projeto_avaliar.html', {
+        'form': form,
+        'projeto': projeto,
+        'avaliacao': avaliacao_existente,
+    })
+
+
+# ─── DASHBOARD COORDENADOR ───
+@admin_ou_coord
+def dashboard(request):
+    total_projetos = Projeto.objects.count()
+    total_alunos = Usuario.objects.filter(papel='aluno').count()
+    total_professores = Usuario.objects.filter(papel='professor').count()
+    total_avaliados = Projeto.objects.filter(status='avaliado').count()
+    total_concluidos = Projeto.objects.filter(status='concluido').count()
+    total_desenvolvimento = Projeto.objects.filter(status='desenvolvimento').count()
+
+    projetos_por_turma = Projeto.objects.exclude(turma__isnull=True).exclude(turma='') \
+        .values('turma').annotate(total=Count('id')).order_by('turma')
+
+    ultimas_avaliacoes = Avaliacao.objects.select_related('professor', 'projeto') \
+        .order_by('-avaliado_em')[:5]
+
+    return render(request, 'dashboard.html', {
+        'total_projetos': total_projetos,
+        'total_alunos': total_alunos,
+        'total_professores': total_professores,
+        'total_avaliados': total_avaliados,
+        'total_concluidos': total_concluidos,
+        'total_desenvolvimento': total_desenvolvimento,
+        'projetos_por_turma': projetos_por_turma,
+        'ultimas_avaliacoes': ultimas_avaliacoes,
+    })
+
+
 # ─── USUÁRIOS ───
 @admin_ou_coord
 def usuarios_lista(request):
@@ -131,7 +228,7 @@ def usuario_novo(request):
     form = UsuarioForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
         form.save()
-        messages.success(request, f'Usuário cadastrado com sucesso!')
+        messages.success(request, 'Usuário cadastrado com sucesso!')
         return redirect('usuarios')
     return render(request, 'usuario_form.html', {'form': form})
 
@@ -139,11 +236,10 @@ def usuario_novo(request):
 @admin_ou_coord
 def usuario_editar(request, pk):
     usuario = get_object_or_404(Usuario, pk=pk)
-    from .forms import UsuarioEditarForm
     form = UsuarioEditarForm(request.POST or None, instance=usuario)
     if request.method == 'POST' and form.is_valid():
         form.save()
-        messages.success(request, f'Usuário {usuario.get_full_name() or usuario.username} atualizado!')
+        messages.success(request, f'Usuário atualizado!')
         return redirect('usuarios')
     return render(request, 'usuario_editar.html', {'form': form, 'usuario': usuario})
 
@@ -162,6 +258,6 @@ def usuario_senha(request, pk):
         else:
             usuario.set_password(senha)
             usuario.save()
-            messages.success(request, f'Senha de {usuario.get_full_name() or usuario.username} redefinida!')
+            messages.success(request, f'Senha redefinida com sucesso!')
             return redirect('usuarios')
     return render(request, 'usuario_senha.html', {'usuario': usuario, 'erro': erro})

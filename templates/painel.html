@@ -5,16 +5,21 @@
 <div class="page-header">
   <div>
     <h1 class="page-title">
-      {% if user.is_admin_ou_coord or user.is_professor %}Todos os Projetos{% else %}Meus Projetos{% endif %}
+      {% if user.is_admin_ou_coord %}Todos os Projetos{% elif user.is_professor %}Projetos para Avaliar{% else %}Meus Projetos{% endif %}
     </h1>
     <p class="page-subtitle">
       Olá, <strong>{{ user.get_full_name|default:user.username }}</strong> ·
       <span class="role-badge role-{{ user.papel }}">{{ user.get_papel_display }}</span>
     </p>
   </div>
-  {% if user.papel == 'aluno' %}
-    <a href="{% url 'projeto_novo' %}" class="btn btn-amber">+ Novo Projeto</a>
-  {% endif %}
+  <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+    {% if user.is_admin_ou_coord %}
+      <a href="{% url 'dashboard' %}" class="btn btn-outline">📊 Dashboard</a>
+    {% endif %}
+    {% if user.papel == 'aluno' %}
+      <a href="{% url 'projeto_novo' %}" class="btn btn-amber">+ Novo Projeto</a>
+    {% endif %}
+  </div>
 </div>
 
 <div class="container-main">
@@ -38,6 +43,34 @@
     </div>
   </div>
 
+  <!-- Filtros (professor e coord) -->
+  {% if user.is_admin_ou_coord or user.is_professor %}
+  <div style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1.5rem;display:flex;gap:1rem;flex-wrap:wrap;align-items:flex-end;">
+    <form method="GET" style="display:flex;gap:1rem;flex-wrap:wrap;align-items:flex-end;width:100%;">
+      <div style="flex:1;min-width:160px;">
+        <label style="font-size:0.78rem;font-weight:600;color:var(--azul);display:block;margin-bottom:0.4rem;">Filtrar por Turma</label>
+        <select name="turma" class="form-control" style="margin:0;">
+          <option value="">Todas as turmas</option>
+          {% for t in turmas %}
+            <option value="{{ t }}" {% if turma_filtro == t %}selected{% endif %}>{{ t }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div style="min-width:160px;">
+        <label style="font-size:0.78rem;font-weight:600;color:var(--azul);display:block;margin-bottom:0.4rem;">Filtrar por Status</label>
+        <select name="status" class="form-control" style="margin:0;">
+          <option value="">Todos os status</option>
+          <option value="desenvolvimento" {% if status_filtro == 'desenvolvimento' %}selected{% endif %}>Em Desenvolvimento</option>
+          <option value="concluido" {% if status_filtro == 'concluido' %}selected{% endif %}>Concluído</option>
+          <option value="avaliado" {% if status_filtro == 'avaliado' %}selected{% endif %}>Avaliado</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary" style="height:42px;">Filtrar</button>
+      <a href="{% url 'painel' %}" class="btn btn-outline" style="height:42px;">Limpar</a>
+    </form>
+  </div>
+  {% endif %}
+
   <!-- Tabela -->
   {% if projetos %}
   <div class="table-card">
@@ -50,9 +83,10 @@
           <tr>
             <th>#</th>
             <th>Título</th>
-            {% if user.is_admin_ou_coord or user.is_professor %}<th>Autor</th>{% endif %}
+            {% if user.is_admin_ou_coord or user.is_professor %}<th>Autor</th><th>Turma</th>{% endif %}
             <th>Tecnologias</th>
             <th>Status</th>
+            <th>Avaliação</th>
             <th>Data</th>
             <th>Ações</th>
           </tr>
@@ -61,13 +95,10 @@
           {% for projeto in projetos %}
           <tr>
             <td class="td-id">{{ projeto.id }}</td>
-            <td>
-              <a href="{% url 'projeto_detalhe' projeto.pk %}" class="td-link">{{ projeto.titulo }}</a>
-            </td>
+            <td><a href="{% url 'projeto_detalhe' projeto.pk %}" class="td-link">{{ projeto.titulo }}</a></td>
             {% if user.is_admin_ou_coord or user.is_professor %}
-            <td style="font-size:0.85rem;color:var(--text-2);">
-              {{ projeto.autor.get_full_name|default:projeto.autor.username }}
-            </td>
+            <td style="font-size:0.85rem;color:var(--text-2);">{{ projeto.autor.get_full_name|default:projeto.autor.username }}</td>
+            <td style="font-size:0.82rem;color:var(--text-3);">{{ projeto.turma|default:"—" }}</td>
             {% endif %}
             <td>
               <div class="tags-list">
@@ -76,14 +107,25 @@
                 {% endfor %}
               </div>
             </td>
+            <td><span class="badge badge-{{ projeto.status_cor }}">{{ projeto.get_status_display }}</span></td>
             <td>
-              <span class="badge badge-{{ projeto.status_cor }}">{{ projeto.get_status_display }}</span>
+              {% with av=projeto.avaliacao %}
+                {% if av %}
+                  <span class="badge badge-{{ av.media_cor }}" style="font-size:0.8rem;">⭐ {{ av.media }}/10</span>
+                {% else %}
+                  <span style="font-size:0.78rem;color:var(--text-3);">Não avaliado</span>
+                {% endif %}
+              {% endwith %}
             </td>
             <td class="td-date">{{ projeto.criado_em|date:"d/m/Y" }}</td>
             <td class="td-actions">
               <a href="{% url 'projeto_detalhe' projeto.pk %}" class="action-icon" title="Ver">👁</a>
-              <a href="{% url 'projeto_editar' projeto.pk %}" class="action-icon" title="Editar">✏️</a>
-              <a href="{% url 'projeto_excluir' projeto.pk %}" class="action-icon danger" title="Excluir">🗑</a>
+              {% if user.is_professor %}
+                <a href="{% url 'projeto_avaliar' projeto.pk %}" class="action-icon" title="Avaliar" style="color:var(--amber);">⭐</a>
+              {% else %}
+                <a href="{% url 'projeto_editar' projeto.pk %}" class="action-icon" title="Editar">✏️</a>
+                <a href="{% url 'projeto_excluir' projeto.pk %}" class="action-icon danger" title="Excluir">🗑</a>
+              {% endif %}
             </td>
           </tr>
           {% endfor %}
@@ -94,8 +136,8 @@
   {% else %}
   <div class="empty-state">
     <span class="empty-icon">📂</span>
-    <h3>Nenhum projeto ainda</h3>
-    <p>Você ainda não submeteu nenhum projeto integrador.</p>
+    <h3>Nenhum projeto encontrado</h3>
+    <p>{% if user.papel == 'aluno' %}Você ainda não submeteu nenhum projeto.{% else %}Nenhum projeto corresponde aos filtros selecionados.{% endif %}</p>
     {% if user.papel == 'aluno' %}
       <a href="{% url 'projeto_novo' %}" class="btn btn-primary">Submeter primeiro projeto</a>
     {% endif %}

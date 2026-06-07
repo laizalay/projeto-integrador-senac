@@ -3,10 +3,6 @@ from django.contrib.auth.models import AbstractUser
 
 
 class Usuario(AbstractUser):
-    """
-    Usuário customizado do Nexus PI.
-    Herda tudo do Django (login, hash de senha, admin) e adiciona o papel.
-    """
     PAPEIS = [
         ('admin', 'Administrador'),
         ('coordenador', 'Coordenador'),
@@ -15,6 +11,7 @@ class Usuario(AbstractUser):
     ]
     papel = models.CharField(max_length=20, choices=PAPEIS, default='aluno')
     bio = models.TextField(blank=True, null=True, verbose_name="Biografia")
+    turma = models.CharField(max_length=50, blank=True, null=True, verbose_name="Turma")
 
     class Meta:
         verbose_name = 'Usuário'
@@ -33,9 +30,6 @@ class Usuario(AbstractUser):
 
 
 class Projeto(models.Model):
-    """
-    Projeto Integrador submetido por um aluno.
-    """
     STATUS_CHOICES = [
         ('desenvolvimento', 'Em Desenvolvimento'),
         ('concluido', 'Concluído'),
@@ -47,6 +41,7 @@ class Projeto(models.Model):
     tecnologias = models.CharField(max_length=300, blank=True, verbose_name="Tecnologias")
     link_github = models.URLField(blank=True, verbose_name="Link do GitHub")
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='desenvolvimento')
+    turma = models.CharField(max_length=50, blank=True, null=True, verbose_name="Turma")
     autor = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='projetos')
     criado_em = models.DateTimeField(auto_now_add=True)
     atualizado_em = models.DateTimeField(auto_now=True)
@@ -70,3 +65,47 @@ class Projeto(models.Model):
             'avaliado': 'warning',
         }
         return cores.get(self.status, 'secondary')
+
+    @property
+    def avaliacao(self):
+        return self.avaliacoes.first()
+
+
+class Avaliacao(models.Model):
+    """Avaliação de um projeto pelo professor — com rubrica."""
+    NOTAS = [(i, str(i)) for i in range(0, 11)]
+
+    projeto = models.ForeignKey(Projeto, on_delete=models.CASCADE, related_name='avaliacoes')
+    professor = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='avaliacoes_feitas')
+
+    # Rubrica — 4 critérios
+    nota_desenvolvimento = models.IntegerField(choices=NOTAS, default=0, verbose_name="Desenvolvimento Técnico (0-10)")
+    nota_documentacao = models.IntegerField(choices=NOTAS, default=0, verbose_name="Documentação (0-10)")
+    nota_apresentacao = models.IntegerField(choices=NOTAS, default=0, verbose_name="Apresentação (0-10)")
+    nota_inovacao = models.IntegerField(choices=NOTAS, default=0, verbose_name="Inovação e Criatividade (0-10)")
+
+    comentario = models.TextField(blank=True, verbose_name="Comentários e Feedback")
+    avaliado_em = models.DateTimeField(auto_now_add=True)
+    atualizado_em = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Avaliação'
+        verbose_name_plural = 'Avaliações'
+        unique_together = ['projeto', 'professor']
+
+    def __str__(self):
+        return f"Avaliação de {self.projeto.titulo} por {self.professor.get_full_name()}"
+
+    @property
+    def media(self):
+        notas = [self.nota_desenvolvimento, self.nota_documentacao,
+                 self.nota_apresentacao, self.nota_inovacao]
+        return round(sum(notas) / len(notas), 1)
+
+    @property
+    def media_cor(self):
+        if self.media >= 7:
+            return 'success'
+        elif self.media >= 5:
+            return 'warning'
+        return 'danger'

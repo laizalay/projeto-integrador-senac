@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Dashboard</h1>
+    <p class="page-subtitle">Acompanhamento geral dos Projetos Integradores.</p>
+  </div>
+  <a href="{% url 'painel' %}" class="btn btn-outline">← Painel</a>
+</div>
+
+<div class="container-main">
+
+  <!-- Cards grandes de stats -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:2rem;">
+
+    <div style="background:var(--azul);color:white;border-radius:var(--radius);padding:1.5rem;text-align:center;">
+      <div style="font-size:2.5rem;font-weight:800;font-family:var(--mono);line-height:1;color:var(--amber-md);">{{ total_projetos }}</div>
+      <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;margin-top:0.5rem;opacity:0.7;">Total de Projetos</div>
+    </div>
+
+    <div style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;text-align:center;box-shadow:var(--shadow-sm);">
+      <div style="font-size:2.5rem;font-weight:800;font-family:var(--mono);line-height:1;color:var(--azul-lt);">{{ total_desenvolvimento }}</div>
+      <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;margin-top:0.5rem;color:var(--text-3);">Em Desenvolvimento</div>
+    </div>
+
+    <div style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;text-align:center;box-shadow:var(--shadow-sm);">
+      <div style="font-size:2.5rem;font-weight:800;font-family:var(--mono);line-height:1;color:var(--success);">{{ total_concluidos }}</div>
+      <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;margin-top:0.5rem;color:var(--text-3);">Concluídos</div>
+    </div>
+
+    <div style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;text-align:center;box-shadow:var(--shadow-sm);">
+      <div style="font-size:2.5rem;font-weight:800;font-family:var(--mono);line-height:1;color:var(--amber);">{{ total_avaliados }}</div>
+      <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;margin-top:0.5rem;color:var(--text-3);">Avaliados</div>
+    </div>
+
+    <div style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;text-align:center;box-shadow:var(--shadow-sm);">
+      <div style="font-size:2.5rem;font-weight:800;font-family:var(--mono);line-height:1;color:#7C3AED;">{{ total_alunos }}</div>
+      <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;margin-top:0.5rem;color:var(--text-3);">Alunos</div>
+    </div>
+
+    <div style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;text-align:center;box-shadow:var(--shadow-sm);">
+      <div style="font-size:2.5rem;font-weight:800;font-family:var(--mono);line-height:1;color:var(--azul);">{{ total_professores }}</div>
+      <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;margin-top:0.5rem;color:var(--text-3);">Professores</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+
+    <!-- Projetos por turma -->
+    <div class="table-card">
+      <div class="table-card-header">
+        <span class="table-card-title">📚 Projetos por Turma</span>
+      </div>
+      {% if projetos_por_turma %}
+      <table>
+        <thead>
+          <tr>
+            <th>Turma</th>
+            <th>Total de Projetos</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in projetos_por_turma %}
+          <tr>
+            <td style="font-weight:600;">{{ item.turma }}</td>
+            <td>
+              <div style="display:flex;align-items:center;gap:0.75rem;">
+                <div style="height:8px;background:var(--azul-lt);border-radius:4px;width:{{ item.total }}0px;max-width:120px;"></div>
+                <span style="font-family:var(--mono);font-weight:700;color:var(--azul);">{{ item.total }}</span>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div style="padding:2rem;text-align:center;color:var(--text-3);font-size:0.875rem;">
+        Nenhuma turma cadastrada ainda.
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Últimas avaliações -->
+    <div class="table-card">
+      <div class="table-card-header">
+        <span class="table-card-title">⭐ Últimas Avaliações</span>
+      </div>
+      {% if ultimas_avaliacoes %}
+      <table>
+        <thead>
+          <tr>
+            <th>Projeto</th>
+            <th>Professor</th>
+            <th>Média</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for av in ultimas_avaliacoes %}
+          <tr>
+            <td style="font-size:0.85rem;font-weight:600;">{{ av.projeto.titulo|truncatechars:25 }}</td>
+            <td style="font-size:0.82rem;color:var(--text-2);">{{ av.professor.get_full_name|default:av.professor.username }}</td>
+            <td><span class="badge badge-{{ av.media_cor }}">{{ av.media }}/10</span></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div style="padding:2rem;text-align:center;color:var(--text-3);font-size:0.875rem;">
+        Nenhuma avaliação registrada ainda.
+      </div>
+      {% endif %}
+    </div>
+
+  </div>
+
+  <!-- Barra de progresso geral -->
+  {% if total_projetos > 0 %}
+  <div style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-top:1.5rem;box-shadow:var(--shadow-sm);">
+    <h3 style="font-size:0.9rem;font-weight:700;color:var(--azul);margin-bottom:1.25rem;">📊 Progresso Geral dos Projetos</h3>
+    <div style="display:flex;height:20px;border-radius:10px;overflow:hidden;gap:2px;">
+      {% if total_desenvolvimento %}
+      <div style="background:var(--azul-lt);flex:{{ total_desenvolvimento }};min-width:4px;" title="Em Desenvolvimento: {{ total_desenvolvimento }}"></div>
+      {% endif %}
+      {% if total_concluidos %}
+      <div style="background:var(--success);flex:{{ total_concluidos }};min-width:4px;" title="Concluídos: {{ total_concluidos }}"></div>
+      {% endif %}
+      {% if total_avaliados %}
+      <div style="background:var(--amber);flex:{{ total_avaliados }};min-width:4px;" title="Avaliados: {{ total_avaliados }}"></div>
+      {% endif %}
+    </div>
+    <div style="display:flex;gap:1.5rem;margin-top:0.75rem;font-size:0.78rem;">
+      <span style="display:flex;align-items:center;gap:0.4rem;"><span style="width:10px;height:10px;border-radius:2px;background:var(--azul-lt);display:inline-block;"></span>Em desenvolvimento ({{ total_desenvolvimento }})</span>
+      <span style="display:flex;align-items:center;gap:0.4rem;"><span style="width:10px;height:10px;border-radius:2px;background:var(--success);display:inline-block;"></span>Concluídos ({{ total_concluidos }})</span>
+      <span style="display:flex;align-items:center;gap:0.4rem;"><span style="width:10px;height:10px;border-radius:2px;background:var(--amber);display:inline-block;"></span>Avaliados ({{ total_avaliados }})</span>
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}
