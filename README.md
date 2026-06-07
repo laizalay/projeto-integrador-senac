@@ -192,8 +192,8 @@ O **Nexus PI** foi desenvolvido com atenção aos princípios da **Lei nº 13.70
 
 ## 🏫 Unidades Curriculares e Professor Orientador
 
-| UC | Contribuição para o Projeto |
-|---|---|
+| UC | Contribuição para o Projeto | Professor Responsável |
+|---|---|---|
 | Coding — Linguagens e Técnicas | Implementação das funcionalidades em Python/Django | Prof. Guibson Santana |
 | Banco de Dados | Modelagem e CRUD no sistema | Prof. Heuryk Wylk |
 | Engenharia de Requisitos | Levantamento de requisitos e documentação SRS (IEEE 830) | Prof. Paulo Pimentel |
@@ -217,8 +217,8 @@ Hospedado via [Render.com](https://render.com) com deploy automático a cada pus
 
 ## 👨‍💻 Equipe
 
-| Nome | Função | GitHub |
-|---|---|---|
+| Nome | Função |
+|---|---|
 | [Arthur Andrey](https://github.com/thurzzinho) | Front-End |
 | [Gabriel Tenório](https://github.com/gaahtenorio) | Back-End |
 | [Laiza Maria](https://github.com/laizalay) | Full-stack |
@@ -382,8 +382,8 @@ http://localhost:8000
 
 ## 🏫 Curricular Units and Advisor
 
-| Curricular Unit | Contribution to the Project |
-|---|---|
+| Curricular Unit | Contribution to the Project | Advisor Teacher |
+|---|---|---|
 | Coding — Languages and Techniques | Feature implementation in Python/Django | Teacher Guibson Santana |
 | Database | Modeling and CRUD in the system | Teacher Heuryk Wylk |
 | Requirements Engineering | Requirements gathering and SRS documentation (IEEE 830) | Teacher Paulo Pimentel |
@@ -407,8 +407,8 @@ Hosted on [Render.com](https://render.com) with automatic deployment on every Gi
 
 ## 👨‍💻 Team
 
-| Name | Role | GitHub |
-|---|---|---|
+| Name | Role |
+|---|---|
 | [Arthur Andrey](https://github.com/thurzzinho) | Front-End |
 | [Gabriel Tenório](https://github.com/gaahtenorio) | Back-End |
 | [Laiza Maria](https://github.com/laizalay) | Full-Stack |
