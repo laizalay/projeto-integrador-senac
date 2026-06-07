@@ -39,11 +39,13 @@ class UsuarioForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field in self.fields.values():
-            field.widget.attrs['class'] = 'form-control'
-        self.fields['turma'].required = False
-        # Remove 'admin' do dropdown — admin só é criado via comando
+    self.usuario_logado = kwargs.pop('usuario_logado', None)
+    super().__init__(*args, **kwargs)
+    for field in self.fields.values():
+        field.widget.attrs['class'] = 'form-control'
+    self.fields['turma'].required = False
+    
+    if not self.usuario_logado or self.usuario_logado.papel != 'admin':
         self.fields['papel'].choices = [
             (k, v) for k, v in self.fields['papel'].choices
             if k != 'admin'
