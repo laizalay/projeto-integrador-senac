@@ -238,7 +238,7 @@ def usuarios_lista(request):
 
 @admin_ou_coord
 def usuario_novo(request):
-    form = UsuarioForm(request.POST or None)
+    form = UsuarioForm(request.POST or None, usuario_logado=request.user)
     if request.method == 'POST' and form.is_valid():
         form.save()
         messages.success(request, 'Usuário cadastrado com sucesso!')
