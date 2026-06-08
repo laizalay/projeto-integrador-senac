@@ -382,18 +382,18 @@ http://localhost:8000
 
 ## 🏫 Curricular Units and Advisor
 
-| Curricular Unit | Contribution to the Project | Advisor Teacher |
+| Curricular Unit | Contribution to the Project | Instructor |
 |---|---|---|
-| Coding — Languages and Techniques | Feature implementation in Python/Django | Teacher Guibson Santana |
-| Database | Modeling and CRUD in the system | Teacher Heuryk Wylk |
-| Requirements Engineering | Requirements gathering and SRS documentation (IEEE 830) | Teacher Paulo Pimentel |
-| Creativity | Interface prototyping and design | Teacher Paulo Pimentel |
-| Research, Technology and Society | Problem definition and feasibility | Teacher Guibson Santana |
-| Legislation | Data protection (LGPD) and developer responsibility | Teacher Renata Cristina |
-| Extension Unit | Integration between disciplines | Teacher Arnott Ramos |
-| Tech English | Bilingual README (PT/EN) | Teacher Leonardo Trevas |
+| Coding — Languages and Techniques | Feature implementation in Python/Django | Prof. Guibson Santana |
+| Database | Modeling and CRUD in the system | Prof. Heuryk Wylk |
+| Requirements Engineering | Requirements gathering and SRS documentation (IEEE 830) | TProf. Paulo Pimentel |
+| Creativity | Interface prototyping and design | Prof. Paulo Pimentel |
+| Research, Technology and Society | Problem definition and feasibility | Prof. Guibson Santana |
+| Legislation | Data protection (LGPD) and developer responsibility | Prof. Renata Cristina |
+| Extension Unit | Integration between disciplines | Prof. Arnott Ramos |
+| Tech English | Bilingual README (PT/EN) | Prof. Leonardo Trevas |
 
-**Advisor Teacher:** Teacher Guibson Santana.
+**Advisor Teacher:** Prof. Guibson Santana.
 
 ---
 
