@@ -11,7 +11,9 @@
     </p>
   </div>
   <div style="display:flex;gap:0.75rem;">
-    <a href="{% url 'projeto_editar' projeto.pk %}" class="btn btn-outline">Editar</a>
+    {% if user.papel == 'aluno' and projeto.autor == user %}
+        <a href="{% url 'projeto_editar' projeto.pk %}" class="btn btn-outline">Editar</a>
+    {% endif %}
     <a href="{% url 'painel' %}" class="btn btn-outline">← Voltar</a>
   </div>
 </div>
