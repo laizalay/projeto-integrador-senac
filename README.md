@@ -109,10 +109,24 @@ pip install -r requirements.txt
 python manage.py migrate
 ```
 
-**5. Crie o administrador inicial**
+**5. Crie os usuários iniciais**
+
+Este comando cria automaticamente os usuários de demonstração e dois projetos de exemplo:
 ```bash
 python manage.py criar_admin
 ```
+
+### Credenciais de demonstração
+
+| Papel | Usuário | Senha |
+|---|---|---|
+| Administrador | admin | admin123 |
+| Coordenador | coordenador | coord123 |
+| Professor | professor | prof123 |
+| Aluno (Maria Silva) | aluno1 | aluno123 |
+| Aluno (João Santos) | aluno2 | aluno123 |
+
+> ⚠️ Altere as senhas após o primeiro acesso em ambiente de produção.
 
 **6. Rode o sistema**
 ```bash
@@ -130,9 +144,9 @@ http://localhost:8000
 
 | Papel | Permissões |
 |---|---|
-| **Administrador** | Acesso total. Cadastra, edita e remove usuários. Gerencia todos os projetos. |
-| **Coordenador** | Visualiza todos os projetos. Acessa o Dashboard. Cadastra usuários. |
-| **Professor** | Visualiza e avalia projetos. Filtra por turma. Registra avaliações com rubrica. |
+| **Administrador** | Acesso total. Cadastra, edita e remove usuários. Gerencia todos os projetos. Redefine senhas. |
+| **Coordenador** | Visualiza todos os projetos. Acessa o Dashboard. Cadastra e edita usuários. |
+| **Professor** | Visualiza projetos, filtra por turma e registra avaliações com rubrica. |
 | **Aluno** | Submete e gerencia seus próprios projetos (CRUD completo). |
 
 ---
@@ -162,7 +176,7 @@ O **Nexus PI** foi desenvolvido com atenção aos princípios da **Lei nº 13.70
 - **Controle de permissões** — cada papel de usuário acessa apenas os dados necessários para sua função (princípio da minimização).
 - **Proteção contra CSRF** — todos os formulários utilizam token CSRF nativo do Django, prevenindo ataques de falsificação de requisição.
 - **Portfólio com consentimento** — apenas projetos com status "Concluído" ou "Avaliado" aparecem no portfólio público, respeitando o controle do aluno sobre seus dados.
-- **Dados institucionais** — o sistema coleta apenas as informações necessárias: nome, e-mail institucional e papel do usuário.
+- **Dados institucionais** — o sistema coleta apenas as informações necessárias: nome, e-mail institucional, papel e turma do usuário.
 
 > ⚠️ Para uso em produção com dados reais, recomenda-se implementar uma política de privacidade formal e obter o consentimento explícito dos usuários.
 
@@ -171,7 +185,7 @@ O **Nexus PI** foi desenvolvido com atenção aos princípios da **Lei nº 13.70
 ## 📅 Fases do Projeto
 
 - [x] **Fase 1** — Painel do Aluno (CRUD + Autenticação)
-- [x] **Fase 2** — Painel do Professor (Avaliações + Rubrica) + Dashboard + Portfólio
+- [x] **Fase 2** — Painel do Professor (Avaliações + Rubrica) + Dashboard + Portfólio Público
 - [ ] **Fase 3** — Relatórios e exportação de dados
 - [ ] **Fase 4** — Perfil do aluno com foto e links
 - [ ] **Fase 5** — Notificações e melhorias de UX
@@ -221,7 +235,7 @@ Hospedado via [Render.com](https://render.com) com deploy automático a cada pus
 |---|---|
 | [Arthur Andrey](https://github.com/thurzzinho) | Front-End |
 | [Gabriel Tenório](https://github.com/gaahtenorio) | Back-End |
-| [Laiza Maria](https://github.com/laizalay) | Full-stack |
+| [Laiza Maria](https://github.com/laizalay) | Full-Stack |
 | [Luis Bezerra](https://github.com/luissbezerra) | Front-End |
 | [Renata Oliveira](https://github.com/srenataoliveira) | Desenvolvimento |
 
@@ -317,10 +331,24 @@ pip install -r requirements.txt
 python manage.py migrate
 ```
 
-**5. Create the initial administrator**
+**5. Create the initial users**
+
+This command automatically creates demo users and two sample projects:
 ```bash
 python manage.py criar_admin
 ```
+
+### Demo credentials
+
+| Role | Username | Password |
+|---|---|---|
+| Administrator | admin | admin123 |
+| Coordinator | coordenador | coord123 |
+| Teacher | professor | prof123 |
+| Student (Maria Silva) | aluno1 | aluno123 |
+| Student (João Santos) | aluno2 | aluno123 |
+
+> ⚠️ Change passwords after first access in a production environment.
 
 **6. Run the system**
 ```bash
@@ -338,8 +366,8 @@ http://localhost:8000
 
 | Role | Permissions |
 |---|---|
-| **Administrator** | Full access. Manages users and all projects. |
-| **Coordinator** | Views all projects. Accesses Dashboard. Registers users. |
+| **Administrator** | Full access. Manages users and all projects. Resets passwords. |
+| **Coordinator** | Views all projects. Accesses Dashboard. Registers and edits users. |
 | **Teacher** | Views and evaluates projects. Filters by class. Registers evaluations with rubric. |
 | **Student** | Submits and manages their own projects (full CRUD). |
 
@@ -354,7 +382,7 @@ http://localhost:8000
 - **Permission control** — each user role only accesses the data necessary for their function (data minimization principle).
 - **CSRF protection** — all forms use Django's native CSRF token, preventing cross-site request forgery attacks.
 - **Portfolio with consent** — only projects with "Completed" or "Evaluated" status appear in the public portfolio.
-- **Institutional data only** — the system collects only the necessary information: name, institutional email and user role.
+- **Institutional data only** — the system collects only the necessary information: name, institutional email, role and class.
 
 ---
 
@@ -386,7 +414,7 @@ http://localhost:8000
 |---|---|---|
 | Coding — Languages and Techniques | Feature implementation in Python/Django | Prof. Guibson Santana |
 | Database | Modeling and CRUD in the system | Prof. Heuryk Wylk |
-| Requirements Engineering | Requirements gathering and SRS documentation (IEEE 830) | TProf. Paulo Pimentel |
+| Requirements Engineering | Requirements gathering and SRS documentation (IEEE 830) | Prof. Paulo Pimentel |
 | Creativity | Interface prototyping and design | Prof. Paulo Pimentel |
 | Research, Technology and Society | Problem definition and feasibility | Prof. Guibson Santana |
 | Legislation | Data protection (LGPD) and developer responsibility | Prof. Renata Cristina |
