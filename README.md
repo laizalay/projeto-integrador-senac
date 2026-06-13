@@ -4,6 +4,12 @@
 >
 > 🇺🇸 Centralized web platform for submission, tracking and evaluation of Senac's integrative projects.
 
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![Institution](https://img.shields.io/badge/Institution-Senac-blue)](https://www.senac.br/)
+[![LGPD](https://img.shields.io/badge/Compliance-LGPD%20Ready-blueviolet)](https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm)
+[![Django](https://img.shields.io/badge/Backend-Django%205-092E20)](https://www.djangoproject.com/)
+[![Deploy](https://img.shields.io/badge/Deploy-Render-46E3B7)](https://render.com)
+
 ---
 
 ## 🌐 Language / Idioma
@@ -83,6 +89,18 @@ nexuspi/
 - [Git](https://git-scm.com/about) — para clonar o repositório
 - pip (gerenciador de pacotes, já vem com Python)
 
+### Configuração das Variáveis de Ambiente
+
+Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
+
+```env
+SECRET_KEY=sua_chave_secreta_aqui
+DEBUG=True
+PYTHON_VERSION=3.11.0
+```
+
+> ⚠️ Nunca compartilhe o arquivo `.env` publicamente. Ele já está incluído no `.gitignore`.
+
 ### Passo a passo
 
 **1. Clone o repositório**
@@ -151,19 +169,26 @@ http://localhost:8000
 
 ---
 
-## 🌐 Páginas do Sistema
+## 🌐 Páginas e Rotas do Sistema
 
-| Página | URL | Acesso |
-|---|---|---|
-| Home | `/` | Público |
-| Portfólio | `/portfolio/` | Público (empresas) |
-| Login | `/login/` | Público |
-| Painel | `/painel/` | Autenticado |
-| Dashboard | `/dashboard/` | Admin/Coord |
-| Novo Projeto | `/projeto/novo/` | Aluno |
-| Avaliar Projeto | `/projeto/<id>/avaliar/` | Professor |
-| Usuários | `/usuarios/` | Admin/Coord |
-| Admin Django | `/admin/` | Superusuário |
+| Método | Página / URL | Descrição | Acesso |
+|---|---|---|---|
+| GET | `/` | Página inicial com vitrine de projetos | Público |
+| GET | `/portfolio/` | Portfólio público de projetos concluídos | Público (empresas) |
+| GET/POST | `/login/` | Autenticação de usuários | Público |
+| POST | `/logout/` | Encerramento de sessão | Autenticado |
+| GET | `/painel/` | Painel principal com lista de projetos | Autenticado |
+| GET | `/dashboard/` | Dashboard com estatísticas gerais | Admin/Coord |
+| GET/POST | `/projeto/novo/` | Submissão de novo projeto | Aluno |
+| GET | `/projeto/<id>/` | Visualização de detalhes do projeto | Autenticado |
+| GET/POST | `/projeto/<id>/editar/` | Edição de projeto | Aluno (dono) |
+| POST | `/projeto/<id>/excluir/` | Exclusão de projeto | Aluno/Admin |
+| GET/POST | `/projeto/<id>/avaliar/` | Avaliação com rubrica | Professor |
+| GET | `/usuarios/` | Lista de usuários cadastrados | Admin/Coord |
+| GET/POST | `/usuarios/novo/` | Cadastro de novo usuário | Admin/Coord |
+| GET/POST | `/usuarios/<id>/editar/` | Edição de dados do usuário | Admin/Coord |
+| GET/POST | `/usuarios/<id>/senha/` | Redefinição de senha | Admin |
+| GET | `/admin/` | Painel administrativo Django | Superusuário |
 
 ---
 
@@ -231,13 +256,13 @@ Hospedado via [Render.com](https://render.com) com deploy automático a cada pus
 
 ## 👨‍💻 Equipe
 
-| Nome | Função |
+| Nome | GitHub |
 |---|---|
-| [Arthur Andrey](https://github.com/thurzzinho) | Front-End |
-| [Gabriel Tenório](https://github.com/gaahtenorio) | Back-End |
-| [Laiza Maria](https://github.com/laizalay) | Full-Stack |
-| [Luis Bezerra](https://github.com/luissbezerra) | Front-End |
-| [Renata Oliveira](https://github.com/srenataoliveira) | Desenvolvimento |
+| Arthur Andrey — Front-End | [@thurzzinho](https://github.com/thurzzinho) |
+| Gabriel Tenório — Back-End | [@gaahtenorio](https://github.com/gaahtenorio) |
+| Laiza Maria — Full-Stack | [@laizalay](https://github.com/laizalay) |
+| Luis Bezerra — Front-End | [@luissbezerra](https://github.com/luissbezerra) |
+| Renata Oliveira — Desenvolvimento | [@srenataoliveira](https://github.com/srenataoliveira) |
 
 ---
 
@@ -304,6 +329,18 @@ nexuspi/
 - [Python 3.10+](https://www.python.org/downloads/)
 - [Git](https://git-scm.com/about) — to clone the repository
 - pip (package manager, bundled with Python)
+
+### Environment Variables
+
+Create a `.env` file in the project root with the following variables:
+
+```env
+SECRET_KEY=your_secret_key_here
+DEBUG=True
+PYTHON_VERSION=3.11.0
+```
+
+> ⚠️ Never share your `.env` file publicly. It is already included in `.gitignore`.
 
 ### Step by step
 
@@ -373,6 +410,29 @@ http://localhost:8000
 
 ---
 
+## 🌐 System Pages and Routes
+
+| Method | Page / URL | Description | Access |
+|---|---|---|---|
+| GET | `/` | Home page with project showcase | Public |
+| GET | `/portfolio/` | Public portfolio of completed projects | Public (companies) |
+| GET/POST | `/login/` | User authentication | Public |
+| POST | `/logout/` | Session termination | Authenticated |
+| GET | `/painel/` | Main dashboard with project list | Authenticated |
+| GET | `/dashboard/` | Statistics overview dashboard | Admin/Coord |
+| GET/POST | `/projeto/novo/` | Submit new project | Student |
+| GET | `/projeto/<id>/` | Project detail view | Authenticated |
+| GET/POST | `/projeto/<id>/editar/` | Edit project | Student (owner) |
+| POST | `/projeto/<id>/excluir/` | Delete project | Student/Admin |
+| GET/POST | `/projeto/<id>/avaliar/` | Evaluate with rubric | Teacher |
+| GET | `/usuarios/` | List of registered users | Admin/Coord |
+| GET/POST | `/usuarios/novo/` | Register new user | Admin/Coord |
+| GET/POST | `/usuarios/<id>/editar/` | Edit user data | Admin/Coord |
+| GET/POST | `/usuarios/<id>/senha/` | Reset user password | Admin |
+| GET | `/admin/` | Django admin panel | Superuser |
+
+---
+
 ## 🔒 Data Protection — LGPD (Brazilian GDPR)
 
 **Nexus PI** was developed following the principles of **Brazilian Law No. 13.709/2018 (LGPD)**:
@@ -435,13 +495,13 @@ Hosted on [Render.com](https://render.com) with automatic deployment on every Gi
 
 ## 👨‍💻 Team
 
-| Name | Role |
+| Name | GitHub |
 |---|---|
-| [Arthur Andrey](https://github.com/thurzzinho) | Front-End |
-| [Gabriel Tenório](https://github.com/gaahtenorio) | Back-End |
-| [Laiza Maria](https://github.com/laizalay) | Full-Stack |
-| [Luis Bezerra](https://github.com/luissbezerra) | Front-End |
-| [Renata Oliveira](https://github.com/srenataoliveira) | Development |
+| Arthur Andrey — Front-End | [@thurzzinho](https://github.com/thurzzinho) |
+| Gabriel Tenório — Back-End | [@gaahtenorio](https://github.com/gaahtenorio) |
+| Laiza Maria — Full-Stack | [@laizalay](https://github.com/laizalay) |
+| Luis Bezerra — Front-End | [@luissbezerra](https://github.com/luissbezerra) |
+| Renata Oliveira — Development | [@srenataoliveira](https://github.com/srenataoliveira) |
 
 ---
 
