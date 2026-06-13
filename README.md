@@ -4,8 +4,8 @@
 >
 > 🇺🇸 Centralized web platform for submission, tracking and evaluation of Senac's integrative projects.
 
-[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-[![Institution](https://img.shields.io/badge/Institution-Senac-blue)](https://www.senac.br/)
+[![Licensa](https://img.shields.io/badge/license-MIT-green)](https://mit-license.org/)
+[![Instituição](https://img.shields.io/badge/Institution-Senac-blue)](https://www.pe.senac.br/)
 [![LGPD](https://img.shields.io/badge/Compliance-LGPD%20Ready-blueviolet)](https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm)
 [![Django](https://img.shields.io/badge/Backend-Django%205-092E20)](https://www.djangoproject.com/)
 [![Deploy](https://img.shields.io/badge/Deploy-Render-46E3B7)](https://render.com)
